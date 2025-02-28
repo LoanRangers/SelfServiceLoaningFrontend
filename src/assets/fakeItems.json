@@ -1,0 +1,43 @@
+[
+    {
+      "category": "VR headsets",
+      "items": [
+        { "name": "meta", "available": true, "location": "Agora", "id": "1001" },
+        { "name": "meta", "available": true, "location": null, "id": "1006" },
+        { "name": "oculus", "available": false, "location": null, "id": "1013" }
+      ]
+    },
+    {
+      "category": "Laptops",
+      "items": [
+        { "name": "lenovo thinkpad", "available": false, "location": null, "id": "1002" },
+        { "name": "lenovo thinkpad", "available": true, "location": null, "id": "1010" },
+        { "name": "hp", "available": true, "location": "Agora", "id": "1014" }
+      ]
+    },
+    {
+      "category": "Cables",
+      "items": [
+        { "name": "HDMI", "available": false, "location": null, "id": "1003" },
+        { "name": "HDMI 325 9236", "available": true, "location": "Natura", "id": "1007" },
+        { "name": "HDMI", "available": false, "location": null, "id": "1011" },
+        { "name": "HDMI", "available": true, "location": "Agora", "id": "1015" }
+      ]
+    },
+    {
+      "category": "Usb sticks",
+      "items": [
+        { "name": "usb stick", "available": false, "location": null, "id": "1004" },
+        { "name": "usb stick", "available": true, "location": "Agora", "id": "1008" },
+        { "name": "usb stick", "available": false, "location": null, "id": "1012" },
+        { "name": "usb stick", "available": true, "location": "Natura", "id": "1016" }
+      ]
+    },
+    {
+      "category": "Others",
+      "items": [
+        { "name": "Something", "available": true, "location": "Agora", "id": "1005" },
+        { "name": "Big gun", "available": false, "location": null, "id": "1009", "description": "Extremely big gun, for killing purposes" }
+      ]
+    }
+  ]

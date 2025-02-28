@@ -1,42 +1,80 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
 .read-the-docs {
   color: #888;
+}
+
+.MuiAccordion-root {
+  background-color: #e3f2fd;
+  border-radius: 5px;
+  margin-bottom: 10px; 
+}
+
+.MuiAccordionSummary-root {
+  background-color: #396796; 
+  color: white; 
+  font-weight: bold;
+}
+
+.MuiAccordionSummary-root:hover {
+  background-color: #396796; 
+  
+}
+
+.MuiAccordionDetails-root {
+  background-color: #ffffff;
+}
+.MuiTableCell-root {
+  border: 1px solid #ccc; 
+}
+
+.MuiTable-root {
+  min-width: 650px;
+}
+
+.MuiTableHead-root .MuiTableCell-root {
+  background-color: #396796; 
+  color: white; 
+  font-weight: bold; 
+}
+
+/* Change the background color for alternate rows in the table */
+.MuiTableRow-root:nth-child(even) {
+  background-color: #dde5eb; 
+}
+
+.MuiTableRow-root:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+.MuiTableContainer-root {
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+}
+
+.MuiTableRow-root:last-child .MuiTableCell-root {
+  border: 1px solid #ccc;
+}
+.MuiButton-root {
+  margin: 0.5rem;
+  background: white;
+  color: #afc29f;
+}
+
+.available {
+  color: green !important;
+}
+
+.not-available {
+  color: red !important;
+}
+
+@media (max-width: 768px) {
+  .MuiTable-root {
+    min-width: 50%;
+  }
 }
