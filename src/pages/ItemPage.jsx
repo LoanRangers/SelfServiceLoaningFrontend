@@ -23,7 +23,7 @@ function ItemPage() {
       {item.description && <p>Description: {item.description}</p>}
 
       {item.available ? (
-        <Button variant="contained" color="primary" sx={{padding: '16 px 32 px', fontSize: '1.25rem', width: '100%'}}>
+        <Button variant="contained" color="primary" sx={{padding: '16 px 32 px', fontSize: '1.25rem', width: '100%'}} onClick={event =>  window.location.href='/item/:id/login'}>
           Log in to loan this item
         </Button>
       ) : (

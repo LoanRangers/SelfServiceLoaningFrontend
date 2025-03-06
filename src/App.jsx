@@ -3,6 +3,9 @@ import './App.css'
 import * as React from 'react';
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import ItemPage from './pages/ItemPage.jsx';
+import LoginSignup from './pages/LoginPage.jsx';
+import UserSession from './controllers/userSession.jsx';
+import Logout from './controllers/Logout.jsx';
 import {Accordion, AccordionSummary, AccordionDetails, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 function Home() {
@@ -58,6 +61,8 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/item/:id" element={<ItemPage/>} />
+        <Route path="/item/:id/login" element={<LoginSignup/>} />
+        <Route path="/dashboard" element={<UserSession/>} />
       </Routes>
     </Router>
     </div>
