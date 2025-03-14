@@ -1,11 +1,6 @@
 #root {
-  margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-.read-the-docs {
-  color: #888;
 }
 
 .MuiAccordion-root {
@@ -73,8 +68,35 @@
   color: red !important;
 }
 
+.search-bar {
+  background-color: white;
+}
+.checkbox-label .MuiCheckbox-root {
+  color: white;
+}
+
+.checkbox-label .MuiCheckbox-root.Mui-checked {
+  color: white;
+}
+
+.drawer-button {
+  position: fixed !important;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.drawer-button:hover {
+  background-color: #2c4a6b; 
+}
+
+.MuiDrawer-paper {
+  background-color: #0f2842 !important; 
+  color: white;
+}
+
 @media (max-width: 768px) {
   .MuiTable-root {
-    min-width: 50%;
+    min-width: 30%
   }
 }

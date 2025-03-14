@@ -1,43 +1,46 @@
 [
-    {
-      "category": "VR headsets",
-      "items": [
-        { "name": "meta", "available": true, "location": "Agora", "id": "1001" },
-        { "name": "meta", "available": true, "location": null, "id": "1006" },
-        { "name": "oculus", "available": false, "location": null, "id": "1013" }
-      ]
-    },
-    {
-      "category": "Laptops",
-      "items": [
-        { "name": "lenovo thinkpad", "available": false, "location": null, "id": "1002" },
-        { "name": "lenovo thinkpad", "available": true, "location": null, "id": "1010" },
-        { "name": "hp", "available": true, "location": "Agora", "id": "1014" }
-      ]
-    },
-    {
-      "category": "Cables",
-      "items": [
-        { "name": "HDMI", "available": false, "location": null, "id": "1003" },
-        { "name": "HDMI 325 9236", "available": true, "location": "Natura", "id": "1007" },
-        { "name": "HDMI", "available": false, "location": null, "id": "1011" },
-        { "name": "HDMI", "available": true, "location": "Agora", "id": "1015" }
-      ]
-    },
-    {
-      "category": "Usb sticks",
-      "items": [
-        { "name": "usb stick", "available": false, "location": null, "id": "1004" },
-        { "name": "usb stick", "available": true, "location": "Agora", "id": "1008" },
-        { "name": "usb stick", "available": false, "location": null, "id": "1012" },
-        { "name": "usb stick", "available": true, "location": "Natura", "id": "1016" }
-      ]
-    },
-    {
-      "category": "Others",
-      "items": [
-        { "name": "Something", "available": true, "location": "Agora", "id": "1005" },
-        { "name": "Big gun", "available": false, "location": null, "id": "1009", "description": "Extremely big gun, for killing purposes" }
-      ]
-    }
-  ]
+  {
+    "category": "VR headsets",
+    "items": [
+      { "name": "meta", "available": true, "location": "Agora", "id": "1001", "manufacturedYear": 2022, "description": "A high-end VR headset for immersive experiences.", "tags": ["VR", "meta", "gaming"] },
+      { "name": "meta", "available": true, "location": null, "id": "1006", "manufacturedYear": 2023, "description": "A lightweight VR headset with advanced tracking.", "tags": ["VR", "wireless", "meta"] },
+      { "name": "oculus", "available": false, "location": null, "id": "1013", "manufacturedYear": 2021, "description": "Oculus headset with 4K resolution and ergonomic design.", "tags": ["VR", "oculus", "4K"] },
+      { "name": "vive", "available": true, "location": "UTU", "id": "1017", "manufacturedYear": 2022, "description": "HTC Vive headset with advanced motion tracking.", "tags": ["VR", "HTC", "motion-tracking"] }
+    ]
+  },
+  {
+    "category": "Laptops",
+    "items": [
+      { "name": "lenovo thinkpad", "available": false, "location": null, "id": "1002", "manufacturedYear": 2020, "description": "Durable business laptop with long battery life.", "tags": ["laptop", "Lenovo", "business"] },
+      { "name": "lenovo thinkpad", "available": true, "location": null, "id": "1010", "manufacturedYear": 2021, "tags": ["laptop", "Lenovo", "performance"] },
+      { "name": "hp", "available": true, "location": "Agora", "id": "1014", "manufacturedYear": 2022, "description": "Lightweight HP laptop for students and professionals.", "tags": ["laptop", "HP", "portable"] },
+      { "name": "dell xps", "available": true, "location": "Somewhere else", "id": "1018", "manufacturedYear": 2023, "description": "Dell XPS ultrabook with OLED display and powerful specs.", "tags": ["laptop", "Dell", "ultrabook"] }
+    ]
+  },
+  {
+    "category": "Cables",
+    "items": [
+      { "name": "HDMI", "available": false, "location": null, "id": "1003", "manufacturedYear": 2019, "description": "Standard HDMI cable for video output.", "tags": ["cable", "HDMI", "video"] },
+      { "name": "HDMI 325 9236", "available": true, "location": "Natura", "id": "1007", "manufacturedYear": 2021, "description": "High-speed HDMI cable with gold-plated connectors.", "tags": ["cable", "HDMI", "high-speed"] },
+      { "name": "HDMI", "available": false, "location": null, "id": "1011", "manufacturedYear": 2018, "description": "Budget-friendly HDMI cable.", "tags": ["cable", "HDMI", "affordable"] },
+      { "name": "HDMI", "available": true, "location": "Agora", "id": "1015", "manufacturedYear": 2020, "description": "4K-compatible HDMI cable.", "tags": ["cable", "HDMI", "4K"] }
+    ]
+  },
+  {
+    "category": "Usb sticks",
+    "items": [
+      { "name": "usb stick", "available": false, "location": null, "id": "1004", "manufacturedYear": 2017, "description": "Basic USB 2.0 stick with 8GB storage.", "tags": ["USB", "storage", "portable"] },
+      { "name": "usb stick", "available": true, "location": "Agora", "id": "1008", "manufacturedYear": 2022, "description": "High-speed USB 3.0 stick with 64GB storage.", "tags": ["USB", "fast", "64GB"] },
+      { "name": "usb stick", "available": false, "location": null, "id": "1012", "manufacturedYear": 2019, "description": "Reliable USB stick for daily use.", "tags": ["USB", "durable", "data"] },
+      { "name": "usb stick", "available": true, "location": "Natura", "id": "1016", "manufacturedYear": 2021, "description": "Secure USB stick with encryption support.", "tags": ["USB", "secure", "encrypted"] }
+    ]
+  },
+  {
+    "category": "Others",
+    "items": [
+      { "name": "Something", "available": true, "location": "Agora", "id": "1005", "manufacturedYear": 2023, "description": "A miscellaneous item with various uses.", "tags": ["misc", "utility", "versatile"] },
+      { "name": "Big gun", "available": false, "location": null, "id": "1009", "manufacturedYear": 2020, "description": "Extremely big gun, for display purposes only.", "tags": ["gun", "display", "collectible"] },
+      { "name": "Smartwatch", "available": true, "location": "Agora", "id": "1019", "manufacturedYear": 2022, "description": "Feature-packed smartwatch with fitness tracking.", "tags": ["wearable", "smartwatch", "fitness"] }
+    ]
+  }
+]
