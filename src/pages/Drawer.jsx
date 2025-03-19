@@ -3,12 +3,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-function Drawer({ open, onClose, LoggedIn, handleLogin, handleLogout, user }) {
+function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
 
   {/* Links on the sidebar */}
   const drawerLinks = [
-    { text: "Loaning History", path: "/" },
+    { text: "Loaning History", path: "/loaninghistory" },
     { text: "Create Items", path: "/CreateItem" },
+    { text: "Rooms", path: "/rooms" },
     { text: "Something", path: "/" },
   ]
 
@@ -25,7 +26,7 @@ function Drawer({ open, onClose, LoggedIn, handleLogin, handleLogout, user }) {
         sx={{ width: 250, color: 'white', paddingTop: '60px' }}
       >
       <Divider sx={{ borderColor: 'white' }} />
-        {!LoggedIn && (
+        {!user && (
           <List>
             <ListItem>
               <Typography variant="body1" sx={{ color: 'white', maxWidth: '200px', textAlign: 'center' }}>
@@ -41,14 +42,14 @@ function Drawer({ open, onClose, LoggedIn, handleLogin, handleLogout, user }) {
             </ListItem>
           </List>
         )}
-        {LoggedIn && (
+        {user && (
           
           <List>
             <ListItem disablePadding>
               <ListItemButton sx={{ justifyContent: 'center' }}>
                 <AccountCircleIcon sx={{ color: 'white', marginRight: '10px' }} />
                 <Typography variant="body1" sx={{ color: 'white' }}>
-                  {user}
+                  {user.name}
                 </Typography>
               </ListItemButton>
             </ListItem>
@@ -62,7 +63,7 @@ function Drawer({ open, onClose, LoggedIn, handleLogin, handleLogout, user }) {
             ))}
           </List>
         )}
-        {LoggedIn && (
+        {user && (
           <List>
             <ListItem>
               <ListItemButton onClick={handleLogout} sx={{ border: '1px solid white', justifyContent: 'center' }}>
