@@ -8,7 +8,7 @@ import { useUser } from '../components/UserContext';
 function LoaningHistory() {
   const [page, setPage] = useState(1)
   const [visibleHistory, setVisibleHistory] = useState([])
-  const {user, setUser} = useUser()
+  const {user} = useUser()
 
   useEffect(() => {
     async function fetchLoaningHistory(){
@@ -20,6 +20,7 @@ function LoaningHistory() {
         }
       )
       setVisibleHistory(req.data)
+      console.log(req.data)
     }
     fetchLoaningHistory()
   }, [page,user])
@@ -42,13 +43,13 @@ function LoaningHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {visibleHistory.map((item) => (
-                <TableRow key={item.item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {visibleHistory.map((item, i) => (
+                <TableRow key={item.item.id+"-"+i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
                   </TableCell>
                   <TableCell>{item.item.description}</TableCell>
-                  <TableCell>{item.item.category}</TableCell>
+                  <TableCell>{item.item.categoryName}</TableCell>
                   <TableCell>{item.loanedDate}</TableCell>
                   <TableCell>{item.returnedDate}</TableCell>
                   <TableCell>{item.locationName}</TableCell>
