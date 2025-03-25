@@ -6,7 +6,9 @@ import CreateItem from './pages/CreateItem';
 import QR from './pages/QR';
 import LoaningHistory from './pages/LoaningHistory';
 
-import { useState, useEffect } from 'react';
+import { useUser } from "./components/UserContext";
+
+import { useState, useEffect} from 'react';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { IconButton, } from '@mui/material';
@@ -15,7 +17,7 @@ import axios from 'axios';
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const {user, setUser} = useUser();
 
   useEffect(() => {
     axios
