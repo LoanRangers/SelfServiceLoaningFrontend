@@ -1,10 +1,66 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from "@mui/material";
+import { Link } from 'react-router-dom';
 
+import { useUser } from '../components/UserContext';
 
 function LoaningHistory() {
+  const [page, setPage] = useState(1)
+  const [visibleHistory, setVisibleHistory] = useState([])
+  const {user, setUser} = useUser()
+
+  useEffect(() => {
+    async function fetchLoaningHistory(){
+      const req = await axios.post(
+        "http://localhost:3000/items/loanhistory", 
+        {
+          "user":user.nickname,
+          "page":page
+        }
+      )
+      console.log(req.data)
+      setVisibleHistory(req.data)
+    }
+    fetchLoaningHistory()
+  }, [page,user])
 
   return (
     <>
-        <h1>Setup loaning history here!</h1>
+        <h1>Loaning history</h1>
+        {!user||!visibleHistory ? "No Loaning history data" :
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Item</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Loaned Date</TableCell>
+                <TableCell>Returned Date</TableCell>
+                <TableCell>Returned To</TableCell>
+                <TableCell>Availability</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {visibleHistory.map((item) => (
+                <TableRow key={item.item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
+                  </TableCell>
+                  <TableCell>{item.item.description}</TableCell>
+                  <TableCell>{item.item.category}</TableCell>
+                  <TableCell>{item.loanedDate}</TableCell>
+                  <TableCell>{item.returnedDate}</TableCell>
+                  <TableCell>{item.locationName}</TableCell>
+                  <TableCell className={item.item.isAvailable ? "available" : "not-available"}>{item.item.isAvailable ? "Yes" : "No"}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        }
+        {!(page>1)?"":<button>&lt;</button>}page: {page}{!(visibleHistory.length==20)?"":<button>&gt;</button>}
     </>
   );
 }
