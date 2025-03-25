@@ -19,7 +19,6 @@ function LoaningHistory() {
           "page":page
         }
       )
-      console.log(req.data)
       setVisibleHistory(req.data)
     }
     fetchLoaningHistory()
@@ -60,7 +59,7 @@ function LoaningHistory() {
           </Table>
         </TableContainer>
         }
-        {!(page>1)?"":<button>&lt;</button>}page: {page}{!(visibleHistory.length==20)?"":<button>&gt;</button>}
+        {!(page>1)?"":<button onClick={()=>setPage(page-1)}>&lt;</button>}page: {page}{!(visibleHistory.length==10)?"":<button onClick={()=>setPage(page+1)}>&gt;</button>}
     </>
   );
 }
