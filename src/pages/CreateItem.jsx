@@ -1,6 +1,7 @@
 
 import './CreateItem.css';
 import items from '../assets/fakeItems.json';
+import axios from 'axios';
 import { useState } from 'react';
 import { Box, Container, TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel, Button } from '@mui/material';
 
@@ -33,7 +34,7 @@ function CreateItem() {
         );
     };
 
-    const handleCreateItem = () => {
+    const handleCreateItem = async () => {
         const newItem = {
             name: itemName,
             description: itemDescription,
@@ -43,7 +44,15 @@ function CreateItem() {
             tags: selectedTags
         };
     
-        console.log('New item created:', newItem);
+        //console.log('New item created:', newItem);
+        const req = await axios.post("http://localhost:3000/items/",{
+            name: itemName,
+            description: itemDescription,
+            location: itemLocation,
+            manufacturedYear: manufacturedYear,
+            category: showNewCategoryField ? newCategory : category,
+            tags: selectedTags})
+        console.log(req.data)
     };
 
     const inputFields = [
