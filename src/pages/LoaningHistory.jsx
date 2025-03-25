@@ -5,10 +5,17 @@ import { Link } from 'react-router-dom';
 
 import { useUser } from '../components/UserContext';
 
+function Pagination({visibleHistory, page, setPage, maxItems, setMaxItems}) {
+  return(
+    <>{!(page>1)?"":<button onClick={()=>setPage(page-1)}>&lt;</button>}page: {page}{!(visibleHistory.length==maxItems)?"":<button onClick={()=>setPage(page+1)}>&gt;</button>}<br></br> items/page: <select onChange={(e)=>{setMaxItems(parseInt(e.target.value)); setPage(1)}} defaultValue={10}><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></>
+  )
+}
+
 function LoaningHistory() {
   const [page, setPage] = useState(1)
   const [visibleHistory, setVisibleHistory] = useState([])
-  const {user} = useUser()
+  const [maxItems, setMaxItems] = useState(10)
+  const {user} = useUser(10)
 
   useEffect(() => {
     async function fetchLoaningHistory(){
@@ -16,14 +23,15 @@ function LoaningHistory() {
         "http://localhost:3000/items/loanhistory", 
         {
           "user":user.nickname,
-          "page":page
+          "page":page,
+          "maxItems":maxItems
         }
       )
       setVisibleHistory(req.data)
       console.log(req.data)
     }
     fetchLoaningHistory()
-  }, [page,user])
+  }, [page,user, maxItems])
 
   return (
     <>
@@ -60,7 +68,7 @@ function LoaningHistory() {
           </Table>
         </TableContainer>
         }
-        {!(page>1)?"":<button onClick={()=>setPage(page-1)}>&lt;</button>}page: {page}{!(visibleHistory.length==10)?"":<button onClick={()=>setPage(page+1)}>&gt;</button>}
+        {!user?"":<Pagination visibleHistory={visibleHistory} page={page} setPage={setPage} maxItems={maxItems} setMaxItems={setMaxItems}></Pagination>}
     </>
   );
 }
