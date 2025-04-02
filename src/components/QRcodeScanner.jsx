@@ -1,4 +1,5 @@
 // file = Html5QrcodePlugin.jsx
+/* Topias' old implementation
 import { Html5Qrcode } from 'html5-qrcode';
 import { useEffect, useRef } from 'react';
 
@@ -36,3 +37,4 @@ const QRcodeScanner = ({qrCodeSuccessCallback}) => {
 }
 
 export default QRcodeScanner;
+*/
