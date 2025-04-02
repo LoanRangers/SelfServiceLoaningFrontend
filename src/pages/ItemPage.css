@@ -26,9 +26,21 @@
     }
 }
 
-.loan-button {
+.input {
+    background-color: white;
+}
+
+
+.button {
     padding: 10px 20px !important;
     color: white !important;
     border-color: white !important;
     margin-top: 20px !important;
+    margin-inline-start: 20px !important;
+}
+
+.tag-button {
+    color: white !important;
+    border-color: white !important;
+    margin-right: 10px !important;
 }

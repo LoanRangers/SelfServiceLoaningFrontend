@@ -9,7 +9,7 @@ function Drawer({ open, onClose, LoggedIn, handleLogin, handleLogout, user }) {
   const drawerLinks = [
     { text: "Loaning History", path: "/" },
     { text: "Create Items", path: "/CreateItem" },
-    { text: "Something", path: "/" },
+    { text: "Create locations", path: "/CreateLocation" },
   ]
 
   return (

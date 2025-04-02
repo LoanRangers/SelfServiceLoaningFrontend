@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Drawer from './pages/Drawer'
 import ItemPage from './pages/ItemPage';
 import CreateItem from './pages/CreateItem';
+import CreateLocation from './pages/CreateLocation';
 
 import { useState } from 'react';
 
@@ -51,6 +52,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/item/:id" element={<ItemPage LoggedIn={LoggedIn} handleLogin={handleLogin}/>} />
         <Route path="/CreateItem" element={<CreateItem />} />
+        <Route path="/CreateLocation" element={<CreateLocation/>} />
       </Routes>
     </div>
   )

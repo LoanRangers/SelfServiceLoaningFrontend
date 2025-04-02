@@ -36,3 +36,21 @@
     border-color: white !important;
     margin-top: 20px !important;
 }
+.tag-button {
+    color: white !important;
+    border-color: white !important;
+    margin-right: 10px !important;
+}
+
+.new-item-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.new-item-list-item {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}

@@ -8,22 +8,20 @@ import SearchIcon from '@mui/icons-material/Search';
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [expanded, setExpanded] = useState([]);
-  const [availableOnly, setAvailableOnly] = useState(false);
+  const [expandedRooms, setExpandedRooms] = useState([]);
+  const [expandedCategories, setExpandedCategories] = useState([]);
+  const [availableOnly, setAvailableOnly] = useState(true);
   const [word, setWord] = useState('');
 
-  {/* Search word change */}
   const handleKeyPress = (event) => {
     setWord(event.target.value);
   };
 
-  {/* Trigger search on button */}
   const handleSearchClick = () => {
     setSearchTerm(word); 
     handleSearch({ target: { value: word } });
   }
 
-  {/* Trigger search on Enter */}
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       setSearchTerm(word);
@@ -35,44 +33,63 @@ function Home() {
     setAvailableOnly(event.target.checked);
   };
 
-  {/* Expand Accordion on click */}
-  const handleAccordionChange = (category) => (event, isExpanded) => {
-    if (isExpanded) {
-      setExpanded(prevExpanded => [...prevExpanded, category]);
-    } else {
-      setExpanded(prevExpanded => prevExpanded.filter(item => item !== category));
-    }
+  const handleRoomAccordionChange = (room) => (event, isExpanded) => {
+    setExpandedRooms(isExpanded ? [...expandedRooms, room] : expandedRooms.filter(item => item !== room));
+  };
+  const handleCategoryAccordionChange = (category) => (event, isExpanded) => {
+    setExpandedCategories(isExpanded ? [...expandedCategories, category] : expandedCategories.filter(item => item !== category))
   };
 
-  {/* Expand Accordions on search */}
   const handleSearch = (event) => {
     if (event.target.value) {
-      setExpanded(items.map(category => category.category));
+      setExpandedRooms(Object.keys(groupedItems));
+      setExpandedCategories(items.map(category => category.category));
     } else {
-      setExpanded([]);
+      setExpandedRooms([]);
+      setExpandedCategories([]);
     }
   };
 
   const handleClearSearch = () => {
     setSearchTerm('');
     setWord('');
-    setExpanded([]);
+    setExpandedRooms([]);
+    setExpandedCategories([]);
   };
 
-  const filteredItems = items.map((category) => ({
-    ...category,
-    items: category.items.filter((item) => {
-      const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesAvailability = !availableOnly || item.available;
-      return matchesSearchTerm && matchesAvailability;
-    }),
-  })).filter((category) => category.items.length > 0);
+  const groupedItems = {};
+  items.forEach((category) => {
+    category.items.forEach((item) => {
+      if (!groupedItems[item.location]) {
+        groupedItems[item.location] = {};
+      }
+      if (!groupedItems[item.location][category.category]) {
+        groupedItems[item.location][category.category] = [];
+      }
+      groupedItems[item.location][category.category].push(item);
+    });
+  });
+
+  const filteredRooms = Object.entries(groupedItems)
+  .map(([room, categories]) => ({
+    room,
+    categories: Object.entries(categories).map(([category, categoryItems]) => ({
+      category,
+      items: categoryItems.filter((item) => {
+        const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
+        const matchesAvailability = !availableOnly || item.available;
+        return matchesSearchTerm && matchesAvailability;
+      }),
+    })).filter((category) => category.items.length > 0)
+  }))
+  .filter((room) => room.categories.length > 0);
 
   return (
     <>
     {/* Search bar */}
       <TextField
-        label="Search for an item"
+        label="Search for an item (name or tag)"
         variant="filled"
         fullWidth
         margin="normal"
@@ -121,42 +138,55 @@ function Home() {
         className='checkbox-label'
       />
         {/* Accordion for each category */}
-      {filteredItems.map((categories) => (
+      {filteredRooms.map((room) => (
         <Accordion
-          key={categories.category}
-          expanded={expanded.includes(categories.category)}
-          onChange={handleAccordionChange(categories.category)}
+          key={room.room}
+          expanded={expandedRooms.includes(room.room)}
+          onChange={handleRoomAccordionChange(room.room)}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-${categories.category}-content`}
-            id={`panel-${categories.category}-header`}
+            aria-controls={`panel-${expandedCategories.category}-content`}
+            id={`panel-${expandedCategories.category}-header`}
           >
-            <Typography component="span" variant="h6">{categories.category}</Typography>
+            <Typography component="span" variant="h6">{room.room}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Item</TableCell>
-                    <TableCell>Availability</TableCell>
-                    <TableCell>Location</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {categories.items.map((item) => (
-                    <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell component="th" scope="row">
-                        <Link to={`/item/${item.id}`}>{item.name}</Link>
-                      </TableCell>
-                      <TableCell className={item.available ? "available" : "not-available"}>{item.available ? "Yes" : "No"}</TableCell>
-                      <TableCell>{item.location ? item.location : "-"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+
+            {/* 🔹 Added: Second-Level Accordion for Categories inside Rooms */}
+            {room.categories.map((category) => (
+              <Accordion
+                key={category.category}
+                expanded={expandedCategories.includes(category.category)}
+                onChange={handleCategoryAccordionChange(category.category)}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography component="span" variant="h6">{category.category}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Item</TableCell>
+                          <TableCell>Availability</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {category.items.map((item) => (
+                          <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell component="th" scope="row">
+                              <Link to={`/item/${item.id}`}>{item.name}</Link>
+                            </TableCell>
+                            <TableCell className={item.available ? "available" : "not-available"}>{item.available ? "Yes" : "No"}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </AccordionDetails>
+              </Accordion>
+            ))}
           </AccordionDetails>
         </Accordion>
       ))}
