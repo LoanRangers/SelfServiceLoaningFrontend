@@ -37,9 +37,6 @@ function Home() {
     setExpandedRooms(isExpanded ? [...expandedRooms, room] : expandedRooms.filter(item => item !== room));
   };
 
-  const handleRoomAccordionChange = (room) => (event, isExpanded) => {
-    setExpandedRooms(isExpanded ? [...expandedRooms, room] : expandedRooms.filter(item => item !== room));
-  };
   const handleCategoryAccordionChange = (category) => (event, isExpanded) => {
     setExpandedCategories(isExpanded ? [...expandedCategories, category] : expandedCategories.filter(item => item !== category))
   };

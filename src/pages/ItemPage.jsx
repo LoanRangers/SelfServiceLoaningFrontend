@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import './ItemPage.css';
 import ModifyItem from './ModifyItem';
 import items from '../assets/fakeItems.json';
