@@ -35,16 +35,6 @@ function CreateItem() {
     };
 
     const handleCreateItem = async () => {
-        const newItem = {
-            name: itemName,
-            description: itemDescription,
-            location: itemLocation,
-            manufacturedYear: manufacturedYear,
-            category: showNewCategoryField ? newCategory : category,
-            tags: selectedTags
-        };
-    
-        //console.log('New item created:', newItem);
         const req = await axios.post("http://localhost:3000/items/",{
             name: itemName,
             description: itemDescription,

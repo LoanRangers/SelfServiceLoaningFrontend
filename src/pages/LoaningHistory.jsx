@@ -15,23 +15,24 @@ function LoaningHistory() {
   const [page, setPage] = useState(1)
   const [visibleHistory, setVisibleHistory] = useState([])
   const [maxItems, setMaxItems] = useState(10)
-  const {user} = useUser(10)
+  const {user} = useUser()
 
   useEffect(() => {
-    async function fetchLoaningHistory(){
-      const req = await axios.post(
-        "http://localhost:3000/items/loanhistory", 
-        {
-          "user":user.nickname,
-          "page":page,
-          "maxItems":maxItems
-        }
-      )
-      setVisibleHistory(req.data)
-      console.log(req.data)
+    if(!!user){
+      async function fetchLoaningHistory(){
+        const req = await axios.post(
+          "http://localhost:3000/items/loanhistory", 
+          {
+            "user":user.nickname,
+            "page":page,
+            "maxItems":maxItems
+          }
+        )
+        setVisibleHistory(req.data)
+      }
+      fetchLoaningHistory()
     }
-    fetchLoaningHistory()
-  }, [page,user, maxItems])
+  }, [page, user, maxItems])
 
   return (
     <>

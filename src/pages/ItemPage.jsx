@@ -41,9 +41,7 @@ function ItemPage() {
         })
         if(req.data.loanId){
           setLoaned(!loaned)
-          console.log("LOANED!!!!!!!!!!!!!")
         }
-        console.log(req.data)
       }
       loanItem()
     }
