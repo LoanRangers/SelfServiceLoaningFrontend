@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Drawer from './pages/Drawer'
 import ItemPage from './pages/ItemPage';
 import CreateItem from './pages/CreateItem';
+import CreateLocation from './pages/CreateLocation';
 import QR from './pages/QR';
 import LoaningHistory from './pages/LoaningHistory';
 
@@ -70,6 +71,7 @@ function App() {
         <Route path='/loaninghistory' element={<LoaningHistory />} />
         <Route exact path="/rooms" element={<Home />} />
         <Route path="/CreateItem" element={<CreateItem />} />
+        <Route path="/CreateLocation" element={<CreateLocation/>} />
         <Route path="/item/:id" element={<ItemPage />} />
       </Routes>
     </div>

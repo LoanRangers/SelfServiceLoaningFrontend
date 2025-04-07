@@ -10,21 +10,18 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedRooms, setExpandedRooms] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState([]);
-  const [availableOnly, setAvailableOnly] = useState(false);
+  const [availableOnly, setAvailableOnly] = useState(true);
   const [word, setWord] = useState('');
 
-  {/* Search word change */}
   const handleKeyPress = (event) => {
     setWord(event.target.value);
   };
 
-  {/* Trigger search on button */}
   const handleSearchClick = () => {
     setSearchTerm(word); 
     handleSearch({ target: { value: word } });
   }
 
-  {/* Trigger search on Enter */}
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       setSearchTerm(word);
@@ -40,12 +37,13 @@ function Home() {
     setExpandedRooms(isExpanded ? [...expandedRooms, room] : expandedRooms.filter(item => item !== room));
   };
 
-  {/* Expand Accordion on click */}
+  const handleRoomAccordionChange = (room) => (event, isExpanded) => {
+    setExpandedRooms(isExpanded ? [...expandedRooms, room] : expandedRooms.filter(item => item !== room));
+  };
   const handleCategoryAccordionChange = (category) => (event, isExpanded) => {
     setExpandedCategories(isExpanded ? [...expandedCategories, category] : expandedCategories.filter(item => item !== category))
   };
 
-  {/* Expand Accordions on search */}
   const handleSearch = (event) => {
     if (event.target.value) {
       setExpandedRooms(Object.keys(groupedItems));
@@ -82,7 +80,8 @@ function Home() {
     categories: Object.entries(categories).map(([category, categoryItems]) => ({
       category,
       items: categoryItems.filter((item) => {
-        const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
         const matchesAvailability = !availableOnly || item.available;
         return matchesSearchTerm && matchesAvailability;
       }),
@@ -94,7 +93,7 @@ function Home() {
     <>
     {/* Search bar */}
       <TextField
-        label="Search for an item"
+        label="Search for an item (name or tag)"
         variant="filled"
         fullWidth
         margin="normal"

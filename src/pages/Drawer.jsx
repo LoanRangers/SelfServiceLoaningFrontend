@@ -10,7 +10,7 @@ function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
     { text: "Loaning History", path: "/loaninghistory" },
     { text: "Create Items", path: "/CreateItem" },
     { text: "Rooms", path: "/rooms" },
-    { text: "Something", path: "/" },
+    { text: "Create locations", path: "/CreateLocation" },
   ]
 
   return (
