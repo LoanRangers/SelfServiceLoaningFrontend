@@ -21,7 +21,7 @@ function LoaningHistory() {
     if(!!user){
       async function fetchLoaningHistory(){
         const req = await axios.post(
-          "http://localhost:3000/items/loanhistory", 
+          import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loanhistory', 
           {
             "user":user.nickname,
             "page":page,

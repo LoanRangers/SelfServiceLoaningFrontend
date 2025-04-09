@@ -26,7 +26,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/me", { withCredentials: true })
+      .get(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/me', { withCredentials: true })
       .then((response) => setUser(response.data))
       .catch((error) => console.error("User fetch error:", error));
   }, []);
@@ -61,12 +61,12 @@ function App() {
   }
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:3000/auth/gitlab";
+    window.location.href = import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/gitlab';
   }
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3000/auth/logout", {}, { withCredentials: true });
+      await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/logout', {}, { withCredentials: true });
       setUser(null); // Remove user from state
       console.log("Logout successful!");
     } catch (error) {

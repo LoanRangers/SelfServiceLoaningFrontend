@@ -20,7 +20,7 @@ function ItemPage() {
 
     useEffect(()=>{
       async function fetchItem(){
-        let req = await axios.get(`http://localhost:3000/items/id/${id}/`)
+        let req = await axios.get(process.env.BACKEND_URL + ':' + process.env.BACKEND_PORT + '/items/id/${id}/')
         setItem(req.data)
         console.log(req)
       }
@@ -36,7 +36,7 @@ function ItemPage() {
 
     const handleLoan = () => {
       async function loanItem(){
-        let req = await axios.post(`http://localhost:3000/items/loan/${id}/`,{
+        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loan/${id}/',{
           "userId":user.nickname,
         })
         if(req.data.loanId){
