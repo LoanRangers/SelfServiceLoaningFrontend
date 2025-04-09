@@ -50,6 +50,7 @@ function App() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    zIndex: 9999
   };
 
   const handleCameraOpen = () => {
@@ -81,6 +82,33 @@ function App() {
 
   return (
     <div>
+      <>
+        <Box sx={{ 
+          position: 'fixed', 
+          bottom: 0, 
+          width: '100%', 
+          padding: '20px', 
+          textAlign: 'center', 
+          backgroundColor: '#20374e', 
+          height: 'calc(48px * 2)',
+          zIndex: 1001 // Add high z-index to ensure it's on top of everything
+        }}>
+          <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
+            <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
+          </IconButton>
+        </Box>
+        <Modal
+          open={cameraOpen}
+          onClose={handleCameraClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box style={style}>
+            <QR cameraOpen={cameraOpen} notify={notify} />
+            <Button onClick={handleCameraClose}>Close</Button>
+          </Box>
+        </Modal>          
+      </>
       <ToastContainer />
       <IconButton className='drawer-button' onClick={handleDrawerOpen} sx={{ color: 'white' }}>
         <MenuIcon />
@@ -90,36 +118,25 @@ function App() {
         onClose={handleDrawerClose}
         handleLogin={handleLogin}
         handleLogout={handleLogout}
-        user = {user}
+        user={user}
       />
-      <Link to="/" style={{ textDecoration: 'none' }}>
-        <h1>UTU Self Loaning System</h1>
-      </Link>
-      <Routes>
-        <Route exact path='/' element={
-          <>
-          <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
-            <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
-          </IconButton>  
-          <Modal
-          open={cameraOpen}
-          onClose={handleCameraClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          >
-            <Box style={style}>
-              <QR cameraOpen={cameraOpen} notify={notify} />
-              <Button onClick={handleCameraClose}>Close</Button>
-            </Box>
-          </Modal>          
-          </>
-        }/>
-        <Route path='/loaninghistory' element={<LoaningHistory />} />
-        <Route exact path="/rooms" element={<Home />} />
-        <Route path="/CreateItem" element={<CreateItem />} />
-        <Route path="/CreateLocation" element={<CreateLocation/>} />
-        <Route path="/item/:id" element={<ItemPage />} />
-      </Routes>
+      
+      <Box sx={{ 
+        overflowY: 'auto',
+        paddingBottom: '96px' // Add padding to account for the bottom bar
+      }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <h1>UTU Self Loaning System</h1>
+        </Link>
+        <Routes>
+          <Route path='/' />
+          <Route path='/loaninghistory' element={<LoaningHistory />} />
+          <Route exact path="/rooms" element={<Home />} />
+          <Route path="/CreateItem" element={<CreateItem />} />
+          <Route path="/CreateLocation" element={<CreateLocation/>} />
+          <Route path="/item/:id" element={<ItemPage />} />
+        </Routes>
+      </Box>
     </div>
   )
 }

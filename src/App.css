@@ -91,7 +91,7 @@
   bottom: 20px; /* Adjusted to hover near the bottom */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Adjust for centering */
-  z-index: 1001;
+  z-index: 999;
   background-color: transparent; /* Transparent background */
 }
 
