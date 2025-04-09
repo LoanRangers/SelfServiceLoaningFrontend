@@ -86,6 +86,23 @@
   z-index: 1000;
 }
 
+.scanner-button {
+  position: fixed !important;
+  bottom: 20px; /* Adjusted to hover near the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  z-index: 1001;
+  background-color: transparent; /* Transparent background */
+}
+
+.scanner-button svg {
+  font-size: 4rem !important; /* Explicitly scale the icon */
+  border: 5px solid white; /* White circle border */
+  border-radius: 50%; /* Make it circular */
+  padding: 10px;
+  display: flex; /* Center the icon inside the circle */
+}
+
 .drawer-button:hover {
   background-color: #2c4a6b; 
 }

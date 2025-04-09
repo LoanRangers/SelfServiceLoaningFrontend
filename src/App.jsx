@@ -9,15 +9,19 @@ import LoaningHistory from './pages/LoaningHistory';
 
 import { useUser } from "./components/UserContext";
 
-import { useState, useEffect} from 'react';
+import { Fragment, forwardRef, useState, useEffect} from 'react';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { IconButton, } from '@mui/material';
+import { Button, Modal, Box, Typography, Slide } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import QrCodeScannerRoundedIcon from '@mui/icons-material/QrCodeScannerRounded';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const {user, setUser} = useUser();
 
   useEffect(() => {
@@ -35,7 +39,26 @@ function App() {
     setDrawerOpen(false);
   };
 
-  
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    height: 400,
+    bgcolor: 'background.black',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const handleCameraOpen = () => {
+    setCameraOpen(true);
+  }
+
+  const handleCameraClose = () => {
+    setCameraOpen(false);
+  }
 
   const handleLogin = () => {
     window.location.href = "http://localhost:3000/auth/gitlab";
@@ -51,8 +74,14 @@ function App() {
     }
   }
 
+  const notify = (message) => {
+    console.log(message);
+    toast(message);
+  };
+
   return (
     <div>
+      <ToastContainer />
       <IconButton className='drawer-button' onClick={handleDrawerOpen} sx={{ color: 'white' }}>
         <MenuIcon />
       </IconButton>
@@ -63,11 +92,25 @@ function App() {
         handleLogout={handleLogout}
         user = {user}
       />
+      <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
+        <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
+      </IconButton>
+      <Modal
+      open={cameraOpen}
+      onClose={handleCameraClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      >
+        <Box style={style}>
+          <QR cameraOpen={cameraOpen} notify={notify} />
+          <Button onClick={handleCameraClose}>Close</Button>
+        </Box>
+      </Modal>
       <Link to="/" style={{ textDecoration: 'none' }}>
         <h1>UTU Self Loaning System</h1>
       </Link>
       <Routes>
-        <Route exact path='/' element={<QR />} />
+        <Route exact path='/' />
         <Route path='/loaninghistory' element={<LoaningHistory />} />
         <Route exact path="/rooms" element={<Home />} />
         <Route path="/CreateItem" element={<CreateItem />} />
