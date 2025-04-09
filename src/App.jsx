@@ -92,25 +92,28 @@ function App() {
         handleLogout={handleLogout}
         user = {user}
       />
-      <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
-        <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
-      </IconButton>
-      <Modal
-      open={cameraOpen}
-      onClose={handleCameraClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      >
-        <Box style={style}>
-          <QR cameraOpen={cameraOpen} notify={notify} />
-          <Button onClick={handleCameraClose}>Close</Button>
-        </Box>
-      </Modal>
       <Link to="/" style={{ textDecoration: 'none' }}>
         <h1>UTU Self Loaning System</h1>
       </Link>
       <Routes>
-        <Route exact path='/' />
+        <Route exact path='/' element={
+          <>
+          <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
+            <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
+          </IconButton>  
+          <Modal
+          open={cameraOpen}
+          onClose={handleCameraClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+            <Box style={style}>
+              <QR cameraOpen={cameraOpen} notify={notify} />
+              <Button onClick={handleCameraClose}>Close</Button>
+            </Box>
+          </Modal>          
+          </>
+        }/>
         <Route path='/loaninghistory' element={<LoaningHistory />} />
         <Route exact path="/rooms" element={<Home />} />
         <Route path="/CreateItem" element={<CreateItem />} />

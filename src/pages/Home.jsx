@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import items from '../assets/fakeItems.json';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, FormControlLabel, Checkbox, IconButton, InputAdornment } from "@mui/material";
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -12,6 +12,20 @@ function Home() {
   const [expandedCategories, setExpandedCategories] = useState([]);
   const [availableOnly, setAvailableOnly] = useState(true);
   const [word, setWord] = useState('');
+  const [items, setItems] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchItems() {
+      let req = await axios.get('http://localhost:3000/items/');
+      setItems(req.data);
+      setLocations(req.data.map(item => item.currentLocation).filter((value, index, self) => self.indexOf(value) === index));
+      setCategories(req.data.map(item => item.categoryName).filter((value, index, self) => self.indexOf(value) === index));
+      console.log(req)
+    }
+    fetchItems();
+  }, [])
 
   const handleKeyPress = (event) => {
     setWord(event.target.value);
@@ -59,32 +73,34 @@ function Home() {
   };
 
   const groupedItems = {};
-  items.forEach((category) => {
-    category.items.forEach((item) => {
-      if (!groupedItems[item.location]) {
-        groupedItems[item.location] = {};
-      }
-      if (!groupedItems[item.location][category.category]) {
-        groupedItems[item.location][category.category] = [];
-      }
-      groupedItems[item.location][category.category].push(item);
-    });
+  categories.forEach((categoryName) => {
+    items
+      .filter((item) => item.categoryName === categoryName)
+      .forEach((item) => {
+        if (!groupedItems[item.currentLocation]) {
+          groupedItems[item.currentLocation] = {};
+        }
+        if (!groupedItems[item.currentLocation][categoryName]) {
+          groupedItems[item.currentLocation][categoryName] = [];
+        }
+        groupedItems[item.currentLocation][categoryName].push(item);
+      });
   });
 
-  const filteredRooms = Object.entries(groupedItems)
-  .map(([room, categories]) => ({
-    room,
-    categories: Object.entries(categories).map(([category, categoryItems]) => ({
+  const filteredRooms = locations.map((location) => ({
+    room: location,
+    categories: categories.map((category) => ({
       category,
-      items: categoryItems.filter((item) => {
+      items: items.filter((item) => {
+        const matchesLocation = item.currentLocation === location;
+        const matchesCategory = item.categoryName === category;
         const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
-        const matchesAvailability = !availableOnly || item.available;
-        return matchesSearchTerm && matchesAvailability;
+                (item.markers && item.markers.some(marker => marker.toLowerCase().includes(searchTerm.toLowerCase())));
+        const matchesAvailability = !availableOnly || item.isAvailable;
+        return matchesLocation && matchesCategory && matchesSearchTerm && matchesAvailability;
       }),
-    })).filter((category) => category.items.length > 0)
-  }))
-  .filter((room) => room.categories.length > 0);
+    })).filter((category) => category.items.length > 0),
+  })).filter((room) => room.categories.length > 0);
 
   return (
     <>
@@ -179,7 +195,7 @@ function Home() {
                             <TableCell component="th" scope="row">
                               <Link to={`/item/${item.id}`}>{item.name}</Link>
                             </TableCell>
-                            <TableCell className={item.available ? "available" : "not-available"}>{item.available ? "Yes" : "No"}</TableCell>
+                            <TableCell className={item.isAvailable ? "available" : "not-available"}>{item.isAvailable ? "Yes" : "No"}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

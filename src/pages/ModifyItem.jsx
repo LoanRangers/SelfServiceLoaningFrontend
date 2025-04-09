@@ -1,26 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ItemPage.css';
-import items from '../assets/fakeItems.json';
 import {Box, Container, Button, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox} from '@mui/material';
 
 
 function ModifyItem ({item, handleModify}) {
 
-    //todo make the default text be the values from before
-
     const [itemName, setItemName] = useState(item.name || '');
     const [itemDescription, setItemDescription] = useState(item.description || '');
     const [manufacturedYear, setManufacturedYear] = useState(item.manufacturedYear || '');
-    const [category, setCategory] = useState(item.category || '');
+    const [category, setCategory] = useState(item.categoryName || '');
     const [showError, setShowError] = useState(false);
     const [showNewCategoryField, setShowNewCategoryField] = useState(false);
     const [newCategory, setNewCategory] = useState('');
 
-    const [selectedTags, setSelectedTags] = useState(item.tags || [])
+    const [selectedTags, setSelectedTags] = useState(item.markers || [])
     const [showTagCreation, setShowTagCreation] = useState(false);
     const [newTag, setNewTag] = useState('');
 
     const fields = ["Item name", "Item description"];
+
+    const [allCategories, setAllCategories] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            let req = await axios.get('http://localhost:3000/items/');
+            setAllCategories([...new Set(req.data.map(item => item.categoryName))]);
+        }
+        fetchData();
+        }, [])
+
 
     const handleModifyItem = () => {
         if (isNaN(parseInt(manufacturedYear)) || manufacturedYear < 1900 || manufacturedYear > new Date().getFullYear()) {
@@ -31,8 +39,8 @@ function ModifyItem ({item, handleModify}) {
                 name: itemName,
                 description: itemDescription,
                 manufacturedYear: manufacturedYear,
-                category: showNewCategoryField ? newCategory : category,
-                tags: selectedTags
+                categoryName: showNewCategoryField ? newCategory : category,
+                markers: selectedTags
             };
             handleModify(modifiedItem)
         }
@@ -42,7 +50,7 @@ function ModifyItem ({item, handleModify}) {
         itemName !== item.name ||
         itemDescription !== item.description ||
         manufacturedYear !== item.manufacturedYear ||
-        category !== item.category ||
+        category !== item.categoryName ||
         JSON.stringify(selectedTags) !== JSON.stringify(item.tags || []);
 
 
@@ -128,8 +136,8 @@ function ModifyItem ({item, handleModify}) {
                         fullWidth
                         variant="filled"
                     >
-                    {items.map((category, index) => (
-                        <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
+                    {allCategories.map((category, index) => (
+                        <MenuItem key={index} value={category}>{category}</MenuItem>
                     ))}
                     <MenuItem value="new-category">Create a new category</MenuItem>
                     </Select>

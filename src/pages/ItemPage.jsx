@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import './ItemPage.css';
 import ModifyItem from './ModifyItem';
-import items from '../assets/fakeItems.json';
 import {Box, Container, Button, Typography} from '@mui/material';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
@@ -28,7 +27,6 @@ function ItemPage() {
       fetchItem()
     },[loaned])
 
-    //const item = items.flatMap(category => category.items).find(item => item.id === id);
     if (!item) {
       return <h1>Item not found</h1>;
     }

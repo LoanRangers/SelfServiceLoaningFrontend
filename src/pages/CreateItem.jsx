@@ -1,8 +1,7 @@
 
 import './CreateItem.css';
-import items from '../assets/fakeItems.json';
-import axios from 'axios';
-import { useState } from 'react';
+import axios, { all } from 'axios';
+import { useState, useEffect } from 'react';
 import { 
     Box, Container, TextField, Select, MenuItem, FormControl, 
     InputLabel, Checkbox, FormControlLabel, Button, List, ListItem, ListItemText
@@ -26,6 +25,19 @@ function CreateItem() {
     const [newItem, setNewItem] = useState({});
 
     const [showError, setShowError] = useState(false);
+
+    const [locations, setLocations] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+          let req = await axios.get('http://localhost:3000/items/');
+          setLocations([...new Set(req.data.map(item => item.currentLocation))]);
+          setAllCategories([...new Set(req.data.map(item => item.categoryName))]);
+        }
+        fetchData();
+      }, [])
+
     
     const handleCategoryChange = (event) => {
         const value = event.target.value;
@@ -55,9 +67,6 @@ function CreateItem() {
         "Item name", "Item description"
     ]
 
-    const locations =[
-        "Location 1", "Location 2", "Location 3", "Location 4", "Location 5", "Location 6", "Location 7", "Location 8", "Location 9", "Location 10"
-    ]
     const handleLocationChange = (event) => {
         const value = event.target.value;
         setItemLocation(value);
@@ -73,14 +82,13 @@ function CreateItem() {
                 description: itemDescription,
                 location: itemLocation,
                 manufacturedYear: manufacturedYear,
-                category: showNewCategoryField ? newCategory : category,
-                tags: selectedTags,
-                available: true,
+                categoryName: showNewCategoryField ? newCategory : category,
+                markers: selectedTags,
+                isAvailable: true,
                 created_on: new Date().toISOString()
             };
             setNewItem(createdItem);
             setItemCreated(true);
-            console.log(manufacturedYear)
             console.log('New item created:', createdItem);
         }
     };
@@ -136,6 +144,7 @@ function CreateItem() {
                     <FormControl className='input' fullWidth variant="filled" margin='normal'>
                     <InputLabel>Select a Category</InputLabel>
                     <Select
+                        
                         className='input'
                         displayEmpty
                         value={category}
@@ -143,8 +152,8 @@ function CreateItem() {
                         fullWidth
                         variant="filled"
                     >
-                    {items.map((category, index) => (
-                        <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
+                    {allCategories.map((category, index) => (
+                        <MenuItem key={index} value={category}>{category}</MenuItem>
                     ))}
                     <MenuItem value="new-category">Create a new category</MenuItem>
                     </Select>
@@ -160,6 +169,24 @@ function CreateItem() {
                         onChange={(e) => setNewCategory(e.target.value)}
                     />                
                     )}
+                    
+                    <FormControl className='input' fullWidth variant="filled" margin='normal'>
+                    <InputLabel>Select a Location</InputLabel>
+                    <Select
+                        MenuProps={{style: {maxHeight: 250}}}
+                        className='input'
+                        displayEmpty
+                        value={itemLocation}
+                        onChange={handleLocationChange}
+                        fullWidth
+                        variant="filled"
+                    >
+                    {locations.map((location, index) => (
+                        <MenuItem key={index} value={location}>{location}</MenuItem>
+                    ))}
+                    </Select>
+                    </FormControl>
+
                     <div>
                         <h4>Select tags</h4>
                         {tags.map((tag) => (
@@ -201,22 +228,6 @@ function CreateItem() {
                         </Button>
                     </div>
                     )}
-
-                    <FormControl className='input' fullWidth variant="filled" margin='normal'>
-                    <InputLabel>Select a Location</InputLabel>
-                    <Select
-                        className='input'
-                        displayEmpty
-                        value={itemLocation}
-                        onChange={handleLocationChange}
-                        fullWidth
-                        variant="filled"
-                    >
-                    {locations.map((location, index) => (
-                        <MenuItem key={index} value={location}>{location}</MenuItem>
-                    ))}
-                    </Select>
-                    </FormControl>
 
                     <Button variant='outlined' 
                     className='create-button' 
