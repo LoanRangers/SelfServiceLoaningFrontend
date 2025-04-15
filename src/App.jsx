@@ -6,6 +6,8 @@ import CreateItem from './pages/CreateItem';
 import CreateLocation from './pages/CreateLocation';
 import QR from './pages/QR';
 import LoaningHistory from './pages/LoaningHistory';
+import AuditLog from './pages/AuditLog';
+import GenerateQR from './pages/GenerateQR';
 
 import { useUser } from "./components/UserContext";
 
@@ -130,11 +132,13 @@ function App() {
         </Link>
         <Routes>
           <Route path='/' />
+          <Route path='/auditlog' element={<AuditLog />} />
           <Route path='/loaninghistory' element={<LoaningHistory />} />
           <Route exact path="/rooms" element={<Home />} />
           <Route path="/CreateItem" element={<CreateItem />} />
           <Route path="/CreateLocation" element={<CreateLocation/>} />
           <Route path="/item/:id" element={<ItemPage />} />
+          <Route path="/generateqr" element={<GenerateQR />} />
         </Routes>
       </Box>
     </div>
