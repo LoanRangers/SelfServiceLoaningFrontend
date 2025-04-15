@@ -7,10 +7,12 @@ function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
 
   {/* Links on the sidebar */}
   const drawerLinks = [
+    { text: "Audit Log", path: "/auditlog" },
     { text: "Loaning History", path: "/loaninghistory" },
     { text: "Create Items", path: "/CreateItem" },
     { text: "Rooms", path: "/rooms" },
     { text: "Create locations", path: "/CreateLocation" },
+    { text: "Generate QR", path: "/generateqr" }
   ]
 
   return (

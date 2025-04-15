@@ -1,0 +1,36 @@
+/* General print styles */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact; /* Ensure colors are printed correctly */
+        print-color-adjust: exact; /* Standard property for compatibility */
+    }
+
+    /* Hide specific elements like the title and buttons */
+    h4, .MuiTypography-h4, .MuiButton-root, .global-title {
+        display: none !important; /* Hide the title, buttons, and global title during printing */
+    }
+
+    /* Ensure the QR code grid is visible */
+    .print-grid {
+        display: grid !important; /* Ensure the QR code grid is visible */
+        grid-template-columns: repeat(4, 1fr); /* 4 columns */
+        grid-auto-rows: auto;
+        gap: 10px;
+        page-break-inside: avoid; /* Avoid breaking rows across pages */
+    }
+
+    .print-grid > div {
+        display: block !important; /* Ensure individual QR codes are visible */
+        text-align: center;
+        padding: 10px;
+        break-inside: avoid; /* Prevent breaking individual QR codes */
+    }
+
+    /* Ensure each page fits 4 columns and 8 rows */
+    @page {
+        size: A4; /* Set page size to A4 */
+        margin: 1cm; /* Adjust margins as needed */
+    }
+}
