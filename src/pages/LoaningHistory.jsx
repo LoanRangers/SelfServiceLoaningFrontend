@@ -14,8 +14,26 @@ function Pagination({visibleHistory, page, setPage, maxItems, setMaxItems}) {
 function LoaningHistory() {
   const [page, setPage] = useState(1)
   const [visibleHistory, setVisibleHistory] = useState([])
+  const [visibleLoaned, setVisibleLoaned] = useState([])
   const [maxItems, setMaxItems] = useState(10)
   const {user} = useUser()
+
+  useEffect(() => {
+    if(!!user){
+      async function fetchLoanedItems(){
+        const req = await axios.post(
+          import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
+          {
+            "user":user.nickname,
+            "page":page,
+            "maxItems":maxItems
+          }
+        )
+        setVisibleLoaned(req.data)
+      }
+      fetchLoanedItems()
+    }
+  }, [page, user, maxItems])
 
   useEffect(() => {
     if(!!user){
@@ -36,6 +54,36 @@ function LoaningHistory() {
 
   return (
     <>
+        <h1>Currently loaned items</h1>
+        {!user||!visibleLoaned ? "No Loaned devices" :
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Item</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Loaned Date</TableCell>
+                <TableCell>Returned Date</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {visibleLoaned.map((item, i) => (
+                <TableRow key={item.item.id+"-"+i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
+                  </TableCell>
+                  <TableCell>{item.item.description}</TableCell>
+                  <TableCell>{item.item.categoryName}</TableCell>
+                  <TableCell>{item.loanedDate}</TableCell>
+                  <TableCell>{item.returnedDate}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        }
+        {!user?"":<Pagination visibleHistory={visibleHistory} page={page} setPage={setPage} maxItems={maxItems} setMaxItems={setMaxItems}></Pagination>}
         <h1>Loaning history</h1>
         {!user||!visibleHistory ? "No Loaning history data" :
         <TableContainer component={Paper}>

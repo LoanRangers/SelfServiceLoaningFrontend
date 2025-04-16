@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './ItemPage.css';
 import ModifyItem from './ModifyItem';
@@ -15,6 +15,7 @@ function ItemPage() {
     const [item, setItem] = useState(null)
     const [loaned, setLoaned] = useState(false)
     const [modifyItem, setModifyItem] = useState(false);
+    const navigate = useNavigate()
 
     let LoggedIn = false;
     const { user } = useUser()
@@ -59,6 +60,9 @@ function ItemPage() {
       setModifyItem(false);
       console.log(modifiedItem);
     }
+    const handleRedirect = () => {
+      navigate('/loaninghistory'); // Replace with your actual route
+    };
 
   return (
     <div>
@@ -113,7 +117,7 @@ function ItemPage() {
           )}
 
           {LoggedIn && (
-            <Button variant="outlined" className='button'>
+            <Button variant="outlined" className='button' onClick={handleRedirect}>
             View loaning history
           </Button>)}
 
