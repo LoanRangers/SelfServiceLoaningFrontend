@@ -13,19 +13,20 @@ function ItemPage() {
     const { id } = useParams();
     const [item, setItem] = useState(null)
     const [loaned, setLoaned] = useState(false)
+    const [modifyItem, setModifyItem] = useState(false);
 
     let LoggedIn = false;
     const { user } = useUser()
-    if (!!user) {LoggedIn = true}
+    if (user) {LoggedIn = true}
 
     useEffect(()=>{
       async function fetchItem(){
-        let req = await axios.get(process.env.BACKEND_URL + ':' + process.env.BACKEND_PORT + '/items/id/${id}/')
+        let req = await axios.get(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/id/${id}/`)
         setItem(req.data)
         console.log(req)
       }
       fetchItem()
-    },[loaned])
+    },[loaned,id])
 
     if (!item) {
       return <h1>Item not found</h1>;
@@ -36,7 +37,7 @@ function ItemPage() {
 
     const handleLoan = () => {
       async function loanItem(){
-        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loan/${id}/',{
+        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/loan/${id}/`,{
           "userId":user.nickname,
         })
         if(req.data.loanId){
@@ -46,7 +47,6 @@ function ItemPage() {
       loanItem()
     }
 
-    const [modifyItem, setModifyItem] = useState(false);
     const handleItemModification = (modifiedItem) => {
       setModifyItem(false);
       console.log(modifiedItem);
