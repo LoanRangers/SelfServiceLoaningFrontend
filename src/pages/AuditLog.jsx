@@ -13,7 +13,7 @@ function AuditLog() {
     console.log("Current user:", user);
     async function fetchAuditLog() {
         const req = await axios.post(
-            "http://localhost:3000/items/auditlog", 
+            `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog`, 
             {
               "user":user.nickname,
               "page":page
