@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from "@mui/material";
 import { Link } from 'react-router-dom';
 
 import { useUser } from '../components/UserContext';
 
 function Pagination({visibleHistory, page, setPage, maxItems, setMaxItems}) {
   return(
-    <>{!(page>1)?"":<button onClick={()=>setPage(page-1)}>&lt;</button>}page: {page}{!(visibleHistory.length==maxItems)?"":<button onClick={()=>setPage(page+1)}>&gt;</button>}<br></br> items/page: <select onChange={(e)=>{setMaxItems(parseInt(e.target.value)); setPage(1)}} defaultValue={10}><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></>
+    <>{!(page>1)?"":<Button onClick={()=>setPage(page-1)}>&lt;</Button>}page: {page}{!(visibleHistory.length==maxItems)?"":<Button onClick={()=>setPage(page+1)}>&gt;</Button>}<br></br> items/page: <select onChange={(e)=>{setMaxItems(parseInt(e.target.value)); setPage(1)}} defaultValue={10}><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></>
   )
 }
 
