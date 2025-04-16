@@ -10,12 +10,10 @@ function AuditLog() {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log("Current user:", user);
     async function fetchAuditLog() {
         const req = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog`, 
+            `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog/logs`, 
             {
-              "user":user.nickname,
               "page":page
             }
           )
@@ -42,11 +40,8 @@ function AuditLog() {
             <TableBody>
               {visibleAuditLog.map((log) => (
                 <TableRow key={log.LogId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                 <TableCell component="th" scope="row">
-                 <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
-                  </TableCell>
                   <TableCell>{log.LogId}</TableCell>
-                  <TableCell>{log.User?.nickname || "Unknown"}</TableCell>
+                  <TableCell>{log.ssoId || "Unknown"}</TableCell>
                   <TableCell>{log.Action}</TableCell>
                   <TableCell>{log.Table}</TableCell>
                   <TableCell>{JSON.stringify(log.Details)}</TableCell>
