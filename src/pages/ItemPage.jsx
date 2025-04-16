@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import './ItemPage.css';
 import ModifyItem from './ModifyItem';
 import {Box, Container, Button, Typography} from '@mui/material';
@@ -37,9 +38,16 @@ function ItemPage() {
 
     const handleLoan = () => {
       async function loanItem(){
-        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/loan/${id}/`,{
-          "userId":user.nickname,
-        })
+        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/loan/${id}/`,
+          {"userId":user.nickname},
+          {withCredentials: true},
+          /*
+          {
+            headers: {
+              Cookies: `auth_tokens:${Cookies.get("auth_tokens")}`
+            }
+          }
+            */)
         if(req.data.loanId){
           setLoaned(!loaned)
         }
