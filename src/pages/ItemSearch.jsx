@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 
-function Home() {
+function ItemSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedRooms, setExpandedRooms] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState([]);
@@ -211,4 +211,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ItemSearch;

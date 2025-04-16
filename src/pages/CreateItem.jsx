@@ -167,6 +167,7 @@ function CreateItem() {
                                 onChange={handleLocationChange}
                                 fullWidth
                                 variant="filled"
+                                MenuProps={{PaperProps: { style: { maxHeight: 250 }, }}}
                             >
                                 {locations.map((location, index) => (
                                     <MenuItem key={index} value={location}>
