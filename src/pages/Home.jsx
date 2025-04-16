@@ -18,7 +18,7 @@ function Home() {
 
   useEffect(() => {
     async function fetchItems() {
-      let req = await axios.get('http://localhost:3000/items/');
+      let req = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/items`);
       setItems(req.data);
       setLocations(req.data.map(item => item.currentLocation).filter((value, index, self) => self.indexOf(value) === index));
       setCategories(req.data.map(item => item.categoryName).filter((value, index, self) => self.indexOf(value) === index));
