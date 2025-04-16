@@ -8,7 +8,7 @@ function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
   {/* Links on the sidebar */}
   const drawerLinks = [
     { text: "Audit Log", path: "/auditlog" },
-    { text: "Loaning History", path: "/loaninghistory" },
+    { text: "Loaned items/history", path: "/loaninghistory" },
     { text: "Create Items", path: "/CreateItem" },
     { text: "Rooms", path: "/rooms" },
     { text: "Create locations", path: "/CreateLocation" },
