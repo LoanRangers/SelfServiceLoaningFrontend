@@ -8,6 +8,7 @@ import ItemSearch from './pages/ItemSearch';
 import LoaningHistory from './pages/LoaningHistory';
 import AuditLog from './pages/AuditLog';
 import GenerateQR from './pages/GenerateQR';
+import Help from './pages/Help';
 
 import { useUser } from "./components/UserContext";
 
@@ -83,6 +84,7 @@ function App() {
         <Route path="/item/:id" element={<ItemPage />} />
         <Route path="/generateqr" element={<GenerateQR />} />
       </Routes>
+      <Help />
     </div>
   )
 }
