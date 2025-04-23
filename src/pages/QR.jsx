@@ -1,12 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, FormControlLabel, Checkbox, IconButton, InputAdornment } from "@mui/material";
-import { Link } from 'react-router-dom';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
-// import QRcodeScanner from '../components/QRcodeScanner';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import CircularProgress from '@mui/material/CircularProgress';
 
 function QR({ cameraOpen, notify }) {
 
