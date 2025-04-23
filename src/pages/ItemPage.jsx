@@ -41,15 +41,9 @@ function ItemPage() {
     const handleLoan = () => {
       async function loanItem(){
         let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/loan/${id}/`,
-          {"userId":user.nickname},
-          {withCredentials: true},
-          /*
-          {
-            headers: {
-              Cookies: `auth_tokens:${Cookies.get("auth_tokens")}`
-            }
-          }
-            */)
+          {},
+          {withCredentials: true}
+            )
         if(req.data.loanId){
           setLoaned(!loaned)
         }

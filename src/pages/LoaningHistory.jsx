@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
 import { Link, useParams } from 'react-router-dom';
 
+import Cookies from 'js-cookie'
+
 import { useUser } from '../components/UserContext';
 
 function Pagination({visibleHistory, page, setPage, maxItems, setMaxItems}) {
@@ -26,9 +28,11 @@ function LoaningHistory() {
     const req = await axios.post(
       import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
       {
-        "user":user.nickname,
         "page":page,
         "maxItems":maxItems
+      },
+      {
+        withCredentials: true
       }
     )
     setVisibleLoaned(req.data)
@@ -38,9 +42,11 @@ function LoaningHistory() {
     const req = await axios.post(
       import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loanhistory', 
       {
-        "user":user.nickname,
         "page":page,
         "maxItems":maxItems
+      },
+      {
+        withCredentials: true
       }
     )
     setVisibleHistory(req.data)
