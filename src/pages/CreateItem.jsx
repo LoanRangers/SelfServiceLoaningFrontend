@@ -6,6 +6,8 @@ import {
     InputLabel, Checkbox, FormControlLabel, Button, List, ListItem, ListItemText
 } from '@mui/material';
 
+import Autocomplete from '@mui/material/Autocomplete';
+
 function CreateItem() {
     const [category, setCategory] = useState('');
     const [showNewCategoryField, setShowNewCategoryField] = useState(false);
@@ -52,11 +54,6 @@ function CreateItem() {
         const value = event.target.value;
         setCategory(value);
         setShowNewCategoryField(value === 'new-category');
-    };
-
-    const handleLocationChange = (event) => {
-        const value = event.target.value;
-        setItemLocation(value);
     };
 
     const handleCreateItem = async () => {
@@ -125,9 +122,19 @@ function CreateItem() {
                             margin="normal"
                             variant="filled"
                             value={manufacturedYear}
-                            error={showError}
-                            helperText={showError ? 'Enter valid year' : ''}
-                            onChange={(e) => setManufacturedYear(e.target.value)}
+                            error={showError || manufacturedYear > new Date().getFullYear()} // Check if the year exceeds the current year
+                            helperText={
+                                showError
+                                    ? 'Enter a valid year'
+                                    : manufacturedYear > new Date().getFullYear()
+                                    ? `Year cannot exceed ${new Date().getFullYear()}`
+                                    : ''
+                            }
+                            onChange={(e) => {
+                                const year = e.target.value;
+                                setManufacturedYear(year);
+                                setShowError(isNaN(parseInt(year)) || year < 1900 || year > new Date().getFullYear());
+                            }}
                         />
                         <FormControl className="input" fullWidth variant="filled" margin="normal">
                             <InputLabel>Select a Category</InputLabel>
@@ -158,24 +165,22 @@ function CreateItem() {
                                 onChange={(e) => setNewCategory(e.target.value)}
                             />
                         )}
-                        <FormControl className="input" fullWidth variant="filled" margin="normal">
-                            <InputLabel>Select a Location</InputLabel>
-                            <Select
-                                className="input"
-                                displayEmpty
-                                value={itemLocation}
-                                onChange={handleLocationChange}
-                                fullWidth
-                                variant="filled"
-                                MenuProps={{PaperProps: { style: { maxHeight: 250 }, }}}
-                            >
-                                {locations.map((location, index) => (
-                                    <MenuItem key={index} value={location}>
-                                        {location}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            options={locations}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search for a location"
+                                    variant="filled"
+                                    margin="normal"
+                                    fullWidth
+                                    style={{ backgroundColor: 'white' }} // Add white background
+                                />
+                            )}
+                            value={itemLocation}
+                            onChange={(event, newValue) => setItemLocation(newValue)}
+                        />
                         <Button
                             variant="outlined"
                             className="create-button"
