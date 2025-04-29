@@ -76,7 +76,6 @@ function CreateItem() {
                 categoryName: showNewCategoryField ? newCategory.trim() : category.trim(),
                 markers: selectedTags,
                 isAvailable: true,
-                created_on: new Date().toISOString(),
             };
 
             try {
@@ -112,6 +111,7 @@ function CreateItem() {
                         <TextField
                             className="input"
                             fullWidth
+                            multiline
                             label="Item description"
                             margin="normal"
                             variant="filled"

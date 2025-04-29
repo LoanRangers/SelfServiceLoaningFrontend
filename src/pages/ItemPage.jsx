@@ -25,7 +25,6 @@ function ItemPage() {
       async function fetchItem(){
         let req = await axios.get(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/id/${id}/`)
         setItem(req.data)
-        console.log(req)
       }
       fetchItem()
     },[loaned,id])
@@ -52,7 +51,7 @@ function ItemPage() {
 
     const handleItemModification = (modifiedItem) => {
       setModifyItem(false);
-      console.log(modifiedItem);
+      console.log(modifiedItem); // replace with modification to backend
     }
     const handleRedirect = () => {
       navigate('/loaninghistory'); // Replace with your actual route
@@ -66,13 +65,13 @@ function ItemPage() {
             <Typography variant="h4" style={{ margin: '10px 0', fontWeight: 'bold' }}>
             Item: {item.name}
             </Typography>
-
-            <Typography variant="h5" style={{ margin: '10px 0' }}>
-              ID: {item.id}
-            </Typography>
+          
+            <h4 style={{ margin: '10px 0'}}> 
+              ID: {item.id} {/*normal h4 because of weird mobile version bs*/}
+            </h4> 
 
             <Typography variant="h6" >
-              Description: {item.description ? item.description : "No description"}
+              {item.description ? item.description.split("\n") : "No description"}
             </Typography>
 
             <Typography variant="h6">

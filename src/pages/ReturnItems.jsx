@@ -33,9 +33,11 @@ function ReturnItems() {
             const req = await axios.post(
               import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
               {
-                "user":user.nickname,
                 "page": 1, // duct tape coding
                 "maxItems": 9999 // duct tape coding
+              },
+              {
+                withCredentials: true
               }
             )
             setLoanedItems(req.data)
