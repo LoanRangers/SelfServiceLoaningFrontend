@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
 import { Link, useParams } from 'react-router-dom';
 
+import Cookies from 'js-cookie'
+
 import { useUser } from '../components/UserContext';
 
 function Pagination({visibleHistory, page, setPage, maxItems, setMaxItems}) {
@@ -22,36 +24,42 @@ function LoaningHistory() {
   const [view, setView] = useState('loaned')
   const {user} = useUser()
 
+  async function fetchLoanedItems(){
+    const req = await axios.post(
+      import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
+      {
+        "page":page,
+        "maxItems":maxItems
+      },
+      {
+        withCredentials: true
+      }
+    )
+    setVisibleLoaned(req.data)
+  }
+
+  async function fetchLoaningHistory(){
+    const req = await axios.post(
+      import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loanhistory', 
+      {
+        "page":page,
+        "maxItems":maxItems
+      },
+      {
+        withCredentials: true
+      }
+    )
+    setVisibleHistory(req.data)
+  }
+
   useEffect(() => {
     if(!!user){
-      async function fetchLoanedItems(){
-        const req = await axios.post(
-          import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
-          {
-            "user":user.nickname,
-            "page":page,
-            "maxItems":maxItems
-          }
-        )
-        setVisibleLoaned(req.data)
-      }
       fetchLoanedItems()
     }
   }, [page, user, maxItems])
 
   useEffect(() => {
     if(!!user){
-      async function fetchLoaningHistory(){
-        const req = await axios.post(
-          import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loanhistory', 
-          {
-            "user":user.nickname,
-            "page":page,
-            "maxItems":maxItems
-          }
-        )
-        setVisibleHistory(req.data)
-      }
       fetchLoaningHistory()
     }
   }, [page, user, maxItems])
@@ -73,7 +81,7 @@ function LoaningHistory() {
       {"locationName": selectedLocation},
       {withCredentials: true},
     )
-    window.location.reload()
+    fetchLoanedItems()
   }
 
   return (

@@ -1,0 +1,31 @@
+.date-element {
+    padding: 0px !important;
+}
+
+.vertical-timeline-element {
+    margin-bottom: 30px !important;
+    margin-top: 0px !important;
+}
+
+.text-element {
+    padding: 5px;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.comment {
+    background-color: white;
+    max-width: 700px;
+}
+
+.MuiInputBase-inputMultiline{
+    min-height: 70px;
+}
+
+.timeline-container {
+    padding-top: 50px;
+}
+
+.checkbox-label {
+    padding-top: 20px;
+}
