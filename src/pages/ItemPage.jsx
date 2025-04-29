@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import './ItemPage.css';
 import ItemTimeline from './ItemTimeline';
 import ModifyItem from './ModifyItem';
