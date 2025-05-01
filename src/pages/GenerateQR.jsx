@@ -90,7 +90,7 @@ function GenerateQR() {
               />
             </Stack>
             <Stack direction="row" spacing={2}>
-              <Typography variant="body1">Number of columns:</Typography>
+              <Typography variant="body1">Number of pages:</Typography>
               <TextField
                 label="Number of pages: "
                 helperText="Default amount of pages is 1"
