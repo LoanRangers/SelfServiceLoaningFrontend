@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/APIservice';
 import './ItemPage.css';
 import {Box, Container, Button, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox} from '@mui/material';
 
@@ -23,8 +23,8 @@ function ModifyItem ({item, handleModify}) {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const categoriesResponse = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/categories`,
+                const categoriesResponse = await api.get(
+                    `/categories`,
                     { withCredentials: true }
                 );
                 setAllCategories(categoriesResponse.data.map(category => category.name));

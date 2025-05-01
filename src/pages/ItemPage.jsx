@@ -5,7 +5,7 @@ import ModifyItem from './ModifyItem';
 import {Box, Container, Button, Typography} from '@mui/material';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
-import axios from 'axios';
+import api from '../services/APIservice';
 
 import { useUser } from '../components/UserContext';
 import { useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ function ItemPage() {
 
     useEffect(()=>{
       async function fetchItem(){
-        let req = await axios.get(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/id/${id}/`)
+        let req = await api.get(`/items/id/${id}/`)
         setItem(req.data)
       }
       fetchItem()
@@ -38,7 +38,7 @@ function ItemPage() {
 
     const handleLoan = () => {
       async function loanItem(){
-        let req = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/loan/${id}/`,
+        let req = await api.post(`/items/loan/${id}/`,
           {},
           {withCredentials: true}
             )

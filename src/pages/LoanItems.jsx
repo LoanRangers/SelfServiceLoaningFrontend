@@ -3,7 +3,7 @@ import QRCodeScanner from './QRCodeScanner';
 import {Container, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Snackbar} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import api from '../services/APIservice';
 
 function LoanItems() {
     const [allItems, setAllItems] = useState([])
@@ -13,7 +13,7 @@ function LoanItems() {
 
     useEffect(() => {
         async function fetchItems() {
-            let req = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/items`);
+            let req = await api.get(`/items`);
             setAllItems(req.data)
         }
         fetchItems();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../services/APIservice';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, FormControlLabel, Checkbox, IconButton, InputAdornment } from "@mui/material";
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -18,7 +18,7 @@ function ItemSearch() {
 
   useEffect(() => {
     async function fetchItems() {
-      let req = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/items`);
+      let req = await api.get(`/items`);
       setItems(req.data);
       setLocations(req.data.map(item => item.currentLocation).filter((value, index, self) => self.indexOf(value) === index));
       setCategories(req.data.map(item => item.categoryName).filter((value, index, self) => self.indexOf(value) === index));
