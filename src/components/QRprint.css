@@ -1,0 +1,59 @@
+
+
+@media print {
+    .print-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .a4-container {
+        width: 210mm;
+        height: 297mm;
+        display: grid;
+        margin:auto;
+        background: white;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .qr-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  }
+
+ @media screen {
+    .print-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .a4-container {
+        width: 210mm;
+        height: 297mm;
+        display: grid;
+        background: white;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .qr-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+ }
+
+  
+  @media screen {
+    .print-wrapper[show="true"] {
+      display: none;
+    }
+  }
