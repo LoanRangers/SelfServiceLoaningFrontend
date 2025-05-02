@@ -96,8 +96,7 @@ function CreateItem() {
     const handleQrReading = (qr) => {
         // get qr code from scanner and attach to item
         console.log(qr);
-        console.log(URL.parse(qr).pathname.split("/")[-1])
-        setItemQR(URL.parse(qr).pathname.split("/")[-1])
+        setItemQR(qr)
         handleCreateItem();
     }
 
