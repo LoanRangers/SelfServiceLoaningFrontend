@@ -32,6 +32,7 @@ function GenerateQR() {
         await api.get(`/qrCodes/generate/${rows*cols*pages}`,
           {withCredentials: true})
         setQRcodes(req.data)
+        console.log(req.data)
       }
     }
   }
@@ -110,7 +111,7 @@ function GenerateQR() {
           <Button onClick={()=>setShowQRprint(!showQRprint)}>{showQRprint?"Show QR print":"Hide QR print"}</Button>
         </Box>
       </Container>
-      <QRprint ref={contentRef} URL={`${URL}+/qr/`} QRcodes={QRcodes} row={rows?rows:8} col={cols?cols:3} show={showQRprint}/>
+      <QRprint ref={contentRef} URL={`${URL}/qr/`} QRcodes={QRcodes} row={rows?rows:8} col={cols?cols:3} show={showQRprint}/>
     </>
   )
 }

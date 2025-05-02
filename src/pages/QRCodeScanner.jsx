@@ -2,10 +2,10 @@ import { useState } from 'react';
 import QR from './QR';
 import QrCodeScannerRoundedIcon from '@mui/icons-material/QrCodeScannerRounded';
 import { Box, Button, IconButton, Modal } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function QRCodeScanner() {
+function QRCodeScanner({callback}) {
     
     const [cameraOpen, setCameraOpen] = useState(false);
     const handleCameraOpen = () => {
@@ -14,11 +14,6 @@ function QRCodeScanner() {
     const handleCameraClose = () => {
         setCameraOpen(false);
     }
-
-    const notify = (message) => {
-    console.log(message);
-    toast(message);
-    };
 
     const style = {
         position: 'absolute',
@@ -57,7 +52,7 @@ function QRCodeScanner() {
             aria-describedby="modal-modal-description"
             >
                 <Box style={style}>
-                    <QR cameraOpen={cameraOpen} notify={notify} />
+                    <QR cameraOpen={cameraOpen} callback={callback} />
                     <Button onClick={handleCameraClose}>Close</Button>
                 </Box>
             </Modal>          

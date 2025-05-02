@@ -4,6 +4,7 @@ import {Container, Box, Button, Table, TableBody, TableCell, TableContainer, Tab
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import api from '../services/APIservice';
+import { toast } from 'react-toastify';
 
 function LoanItems() {
     const [allItems, setAllItems] = useState([])
@@ -43,13 +44,34 @@ function LoanItems() {
         }
     }
 
+    const getItemByQR = async(qr) => {
+        let req = await api.get(`/qrCodes/item/${qr}`)
+        return req.data
+    }
+
     const handleDelete = (id) => {
         setScannedItems(items => items.filter(item => item.id !== id))
     }
 
-    const handleConfrimLoan = () => {
+    const handleConfirmLoan = () => {
         console.log('Loan items:', scannedItems);
         //todo: send loan request to backend
+    }
+
+    const notify = (message) => {
+        console.log(message);
+        toast(message);
+        };
+    
+    const scanCallback = (message) => {
+        notify(message)
+        const itemURL = URL.parse(message)
+        console.log(itemURL.origin)
+        if(itemURL.origin == `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`) {
+            console.log("Origin ok")
+        }
+        const item = getItemByQR(message)
+        handleScan(item.id)
     }
     
     return (
@@ -83,7 +105,7 @@ function LoanItems() {
                         </Table>
                     </TableContainer>
                     
-                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
+                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
 
@@ -102,7 +124,7 @@ function LoanItems() {
             onClose={() => setOpenSnackbar(false)}
             />
 
-            <QRCodeScanner className="qr-code-scanner" />
+            <QRCodeScanner className="qr-code-scanner" callback={scanCallback} />
 
 
             {/*test buttons, remove when qr reading is possible*/}
