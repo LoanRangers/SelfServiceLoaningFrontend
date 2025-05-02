@@ -52,7 +52,6 @@ function GenerateQR() {
               label="Number of codes: "
               variant="outlined"
               value={count}
-              defaultValue="24"
               margin='normal'
               slotProps={{ htmlInput: { 'type': 'number' } }}
               onChange={(e) => setCount(e.target.value)}
@@ -68,7 +67,6 @@ function GenerateQR() {
                 helperText="Default amount of rows is 8"
                 variant="outlined"
                 value={rows}
-                defaultValue="8"
                 margin='normal'
                 slotProps={{ htmlInput: { 'type': 'number' } }}
                 onChange={(e) => setRows(e.target.value)}
@@ -82,7 +80,6 @@ function GenerateQR() {
                 helperText="Default amount of columns is 3"
                 variant="outlined"
                 value={cols}
-                defaultValue="3"
                 margin='normal'
                 slotProps={{ htmlInput: { 'type': 'number' } }}
                 onChange={(e) => setCols(e.target.value)}
@@ -96,7 +93,6 @@ function GenerateQR() {
                 helperText="Default amount of pages is 1"
                 variant="outlined"
                 value={pages}
-                defaultValue="1"
                 margin='normal'
                 slotProps={{ htmlInput: { 'type': 'number' } }}
                 onChange={(e) => setPages(e.target.value)}
