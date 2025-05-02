@@ -1,23 +1,41 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import QRCodeScanner from './QRCodeScanner';
-import {Container, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Snackbar} from '@mui/material';
+import { Container, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Snackbar } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import api from '../services/APIservice';
+import { Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Select, TextField } from '@mui/material';
 
 function LoanItems() {
     const [allItems, setAllItems] = useState([])
     const [scannedItems, setScannedItems] = useState([])
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [openFlagDialog, setOpenFlagDialog] = useState(false);
+    const [selectedFlag, setSelectedFlag] = useState('');
+    const [flagComment, setFlagComment] = useState('');
+    const [itemToFlag, setItemToFlag] = useState(null);
+    const [predefinedFlags, setPredefinedFlags] = useState([]);
 
     useEffect(() => {
         async function fetchItems() {
             let req = await api.get(`/items`);
-            setAllItems(req.data)
+            setAllItems(req.data);
         }
         fetchItems();
-      }, [])
+    }, []);
+
+    useEffect(() => {
+        async function fetchFlags() {
+            try {
+                const response = await api.get('/flags');
+                setPredefinedFlags(response.data.map((flag) => flag.name)); // Extract flag names
+            } catch (error) {
+                console.error('Error fetching flags:', error);
+            }
+        }
+        fetchFlags();
+    }, []);
 
     const handleScan = (id) => {
         const item = allItems.find(item => item.id === id);
@@ -30,13 +48,13 @@ function LoanItems() {
                 else {
                     setScannedItems(items => [...items, item]);
                 }
-                
+
             }
             else {
                 setSnackbarMessage(`Item with ID ${id} is currently loaned out.`)
                 setOpenSnackbar(true);
             }
-        } 
+        }
         else {
             setSnackbarMessage(`Item with ID ${id} not found.`)
             setOpenSnackbar(true);
@@ -51,7 +69,40 @@ function LoanItems() {
         console.log('Loan items:', scannedItems);
         //todo: send loan request to backend
     }
-    
+
+    const handleOpenFlagDialog = (item) => {
+        setItemToFlag(item);
+        setOpenFlagDialog(true);
+    };
+
+    const handleCloseFlagDialog = () => {
+        setOpenFlagDialog(false);
+        setSelectedFlag('');
+        setFlagComment('');
+    };
+
+    const handleSubmitFlag = async () => {
+        if (!selectedFlag || !flagComment.trim()) {
+            alert('Please select a flag and add a comment.');
+            return;
+        }
+
+        try {
+            const response = await api.post('/flags', {
+                itemId: itemToFlag.id, // ID of the flagged item
+                flagName: selectedFlag, // Selected flag name
+                comment: flagComment.trim(), // Comment added by the user
+            });
+
+            alert('Item flagged successfully.');
+            console.log('Flag response:', response.data); // For debugging purposes
+            handleCloseFlagDialog();
+        } catch (error) {
+            console.error('Error flagging item:', error);
+            alert('Failed to flag the item.');
+        }
+    };
+
     return (
         <div>
             <Container maxWidth="xl" sx={{ paddingTop: 4, paddingBottom: 10 }}>
@@ -69,12 +120,17 @@ function LoanItems() {
                             </TableHead>
                             <TableBody>
                                 {scannedItems.map((item) => (
-                                    <TableRow key = {item.id}>
+                                    <TableRow key={item.id}>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.categoryName}</TableCell>
-                                        <TableCell className='table-cell-small' align="center">
+                                        <TableCell className="table-cell-small" align="center">
                                             <IconButton onClick={() => handleDelete(item.id)} sx={{ color: 'gray' }}>
-                                                <DeleteIcon></DeleteIcon>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                            <IconButton onClick={() => handleOpenFlagDialog(item)} sx={{ color: 'orange' }}>
+                                                <span role="img" aria-label="flag">
+                                                    🚩
+                                                </span>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -82,7 +138,7 @@ function LoanItems() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    
+
                     {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
@@ -90,21 +146,54 @@ function LoanItems() {
                 </Box>
             </Container>
             <Snackbar
-            autoHideDuration={3000}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={openSnackbar}
-            action={
-                <IconButton aria-label="close" color="inherit" onClick={() => setOpenSnackbar(false)} sx={{ p: 0 }}>
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            }
-            message={snackbarMessage}
-            onClose={() => setOpenSnackbar(false)}
+                autoHideDuration={3000}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={openSnackbar}
+                action={
+                    <IconButton aria-label="close" color="inherit" onClick={() => setOpenSnackbar(false)} sx={{ p: 0 }}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+                message={snackbarMessage}
+                onClose={() => setOpenSnackbar(false)}
             />
 
             <QRCodeScanner className="qr-code-scanner" />
 
-
+            <Dialog open={openFlagDialog} onClose={handleCloseFlagDialog}>
+                <DialogTitle>Flag Item</DialogTitle>
+                <DialogContent>
+                    <Select
+                        fullWidth
+                        value={selectedFlag}
+                        onChange={(e) => setSelectedFlag(e.target.value)}
+                        displayEmpty
+                    >
+                        <MenuItem value="" disabled>
+                            Select a flag
+                        </MenuItem>
+                        {predefinedFlags.map((flag) => (
+                            <MenuItem key={flag} value={flag}>
+                                {flag}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <TextField
+                        fullWidth
+                        multiline
+                        margin="normal"
+                        label="Add a comment"
+                        value={flagComment}
+                        onChange={(e) => setFlagComment(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseFlagDialog}>Cancel</Button>
+                    <Button onClick={handleSubmitFlag} variant="contained" color="primary">
+                        Submit
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {/*test buttons, remove when qr reading is possible*/}
             <Button variant='outlined' className='confirm-button' onClick={() => handleScan("ffa4078c-5433-4af3-a13f-7b3e8fecea39")}>
                 available item 1
