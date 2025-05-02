@@ -6,13 +6,18 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
 
   {/* Links on the sidebar */}
-  const drawerLinks = [
+  const generalLinks = [
     { text: "Audit Log", path: "/auditlog" },
-    { text: "Loaned items/history", path: "/loaninghistory" },
     { text: "Create Items", path: "/CreateItem" },
-    { text: "Rooms", path: "/rooms" },
     { text: "Create locations", path: "/CreateLocation" },
-    { text: "Generate QR", path: "/generateqr" }
+    { text: "Generate QR", path: "/generateqr" },
+    { text: "Browse Items", path: "/browse" },
+  ]
+
+  const userLinks = [
+    { text: "Loaned items/history", path: "/loaninghistory" },
+    { text: "Loan Items", path: "/loan" },
+    { text: "Return Items", path: "/return" },
   ]
 
   return (
@@ -55,8 +60,16 @@ function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
                 </Typography>
               </ListItemButton>
             </ListItem>
-            {/* Buttons on the sidebar */}
-            {drawerLinks.map((link) =>(
+            {userLinks.map((link) =>(
+              <ListItem disablePadding key={link.text}>
+                <ListItemButton component={Link} to={link.path}>
+                  <ListItemText primary={link.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+            <Divider sx={{ borderColor: 'white', marginTop: "10px" }} />
+            {/* Other buttons on the sidebar */}
+            {generalLinks.map((link) =>(
               <ListItem disablePadding key={link.text}>
                 <ListItemButton component={Link} to={link.path}>
                   <ListItemText primary={link.text} />

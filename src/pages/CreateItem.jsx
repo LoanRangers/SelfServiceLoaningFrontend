@@ -1,5 +1,5 @@
 import './CreateItem.css';
-import axios from 'axios';
+import api from '../services/APIservice';
 import { useState, useEffect } from 'react';
 import { 
     Box, Container, TextField, Select, MenuItem, FormControl, 
@@ -28,15 +28,15 @@ function CreateItem() {
         const fetchLocationsAndCategories = async () => {
             try {
                 // Fetch locations
-                const locationsResponse = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/locations`,
+                const locationsResponse = await api.get(
+                    `/locations`,
                     { withCredentials: true }
                 );
                 setLocations(locationsResponse.data.map(location => location.name));
 
                 // Fetch categories
-                const categoriesResponse = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/categories`,
+                const categoriesResponse = await api.get(
+                    `/categories`,
                     { withCredentials: true }
                 );
                 setAllCategories(categoriesResponse.data.map(category => category.name));
@@ -76,12 +76,11 @@ function CreateItem() {
                 categoryName: showNewCategoryField ? newCategory.trim() : category.trim(),
                 markers: selectedTags,
                 isAvailable: true,
-                created_on: new Date().toISOString(),
             };
 
             try {
-                const response = await axios.post(
-                    `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/items/`,
+                const response = await api.post(
+                    `/items/`,
                     createdItem,
                     { withCredentials: true }
                 );
@@ -112,6 +111,7 @@ function CreateItem() {
                         <TextField
                             className="input"
                             fullWidth
+                            multiline
                             label="Item description"
                             margin="normal"
                             variant="filled"

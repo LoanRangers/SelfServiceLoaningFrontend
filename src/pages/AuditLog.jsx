@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../services/APIservice';
 import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { Link } from 'react-router-dom';
@@ -11,8 +11,8 @@ function AuditLog() {
 
   useEffect(() => {
     async function fetchAuditLog() {
-        const req = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog/logs`, 
+        const req = await api.post(
+            "/auditlog/logs", 
             {
               "page":page
             }

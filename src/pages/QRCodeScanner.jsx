@@ -35,34 +35,32 @@ function QRCodeScanner() {
       };
 
     return(
-        <div>
-            <>  
-                <Box sx={{ 
-                position: 'fixed', 
-                bottom: 0, 
-                width: '100%', 
-                padding: '20px', 
-                textAlign: 'center', 
-                backgroundColor: '#20374e', 
-                height: 'calc(48px * 2)',
-                zIndex: 1001 // Add high z-index to ensure it's on top of everything
-                }}>
+        <div>  
+            <Box sx={{ 
+            position: 'fixed', 
+            bottom: 0, 
+            width: '100%', 
+            padding: '20px', 
+            textAlign: 'center', 
+            backgroundColor: '#20374e', 
+            height: 'calc(48px * 2)',
+            zIndex: 1001 // Add high z-index to ensure it's on top of everything
+            }}>
                 <IconButton className='scanner-button' onClick={handleCameraOpen} sx={{ color: 'white', fontSize: 'large'}}>
                     <QrCodeScannerRoundedIcon sx={{ fontSize: 'large' }} />
                 </IconButton>
-                </Box>
-                <Modal
-                open={cameraOpen}
-                onClose={handleCameraClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                >
+            </Box>
+            <Modal
+            open={cameraOpen}
+            onClose={handleCameraClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            >
                 <Box style={style}>
                     <QR cameraOpen={cameraOpen} notify={notify} />
                     <Button onClick={handleCameraClose}>Close</Button>
                 </Box>
-                </Modal>          
-            </>
+            </Modal>          
             <ToastContainer />
         </div>
     )   

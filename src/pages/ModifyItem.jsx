@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import api from '../services/APIservice';
 import './ItemPage.css';
 import {Box, Container, Button, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox} from '@mui/material';
 
@@ -17,17 +18,22 @@ function ModifyItem ({item, handleModify}) {
     const [showTagCreation, setShowTagCreation] = useState(false);
     const [newTag, setNewTag] = useState('');
 
-    const fields = ["Item name", "Item description"];
-
     const [allCategories, setAllCategories] = useState([]);
 
     useEffect(() => {
-        async function fetchData() {
-            let req = await axios.get('http://localhost:3000/items/');
-            setAllCategories([...new Set(req.data.map(item => item.categoryName))]);
+        const fetchCategories = async () => {
+            try {
+                const categoriesResponse = await api.get(
+                    `/categories`,
+                    { withCredentials: true }
+                );
+                setAllCategories(categoriesResponse.data.map(category => category.name));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
         }
-        fetchData();
-        }, [])
+        fetchCategories();
+    }, [])
 
 
     const handleModifyItem = () => {
@@ -88,32 +94,25 @@ function ModifyItem ({item, handleModify}) {
             className="container">
             <Box className="box">
                 <h2>Modify {item.name}</h2>
-                {fields.map((field, index) => (
-                    <TextField
-                    key={field + " " + index}
+                <TextField
                     className='input'
                     fullWidth
-                    label={field}
+                    label={"Item name"}
                     margin='normal'
                     variant="filled"
-                    value={
-                        index === 0 ? itemName :
-                        itemDescription
-                    }
-                    onChange={(e) => {
-                        switch(index) {
-                            case 0:
-                                setItemName(e.target.value)
-                                break;
-                            case 1:
-                                setItemDescription(e.target.value)
-                                break;
-                            default:
-                                break;
-                        }
-                    }}
+                    value={itemName}
+                    onChange={(e) => {setItemName}}
                     />
-                ))}
+                <TextField
+                    className='input'
+                    fullWidth
+                    multiline
+                    label={"Item description"}
+                    margin='normal'
+                    variant="filled"
+                    value={itemDescription}
+                    onChange={(e) => {setItemDescription(e.target.value)}}
+                    />
                 <TextField
                     className='input'
                     fullWidth
@@ -125,7 +124,6 @@ function ModifyItem ({item, handleModify}) {
                     helperText={showError ? "Enter valid year" : ""}
                     onChange={(e) => setManufacturedYear(e.target.value)}
                     >
-
                 </TextField>
                 <FormControl className='input' fullWidth variant="filled" margin='normal'>
                     <InputLabel>Select a Category</InputLabel>
@@ -154,47 +152,47 @@ function ModifyItem ({item, handleModify}) {
                     />                
                 )}
                 
-                <div>
-                        <h4>Select tags</h4>
-                        {tags.map((tag) => (
-                            <FormControlLabel
-                            key={tag}
-                            control={
-                                <Checkbox
-                                checked={selectedTags.includes(tag)}
-                                onChange={handleTagChange}
-                                name={tag}
-                                />
-                            }
-                            label={tag}
-                            className='checkbox-label'
+                {/*<div>
+                    <h4>Select tags</h4>
+                    {tags.map((tag) => (
+                        <FormControlLabel
+                        key={tag}
+                        control={
+                            <Checkbox
+                            checked={selectedTags.includes(tag)}
+                            onChange={handleTagChange}
+                            name={tag}
                             />
-                        ))}
-                        {!showTagCreation && (
-                            <Button variant='outlined' className='tag-button' onClick={() => setShowTagCreation(true)}>
-                                Add tag
-                            </Button>)}
-                    </div>
-                    
-                    {showTagCreation && (
-                    <div>
-                        <TextField
-                        className='input'
-                        fullWidth
-                        label="New tag"
-                        margin="normal"
-                        variant="filled"
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
+                        }
+                        label={tag}
+                        className='checkbox-label'
                         />
-                        <Button variant='outlined' className='tag-button' onClick={handleTagCreation} disabled={!newTag || (tags.includes(newTag))}>
-                        Add tag
-                        </Button>  
-                        <Button variant='outlined' className='tag-button' onClick={() => setShowTagCreation(false)}>
-                        Cancel
-                        </Button>
-                    </div>
-                    )}
+                    ))}
+                    {!showTagCreation && (
+                        <Button variant='outlined' className='tag-button' onClick={() => setShowTagCreation(true)}>
+                            Add tag
+                        </Button>)}
+                </div>
+                    
+                {showTagCreation && (
+                <div>
+                    <TextField
+                    className='input'
+                    fullWidth
+                    label="New tag"
+                    margin="normal"
+                    variant="filled"
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
+                    />
+                    <Button variant='outlined' className='tag-button' onClick={handleTagCreation} disabled={!newTag || (tags.includes(newTag))}>
+                    Add tag
+                    </Button>  
+                    <Button variant='outlined' className='tag-button' onClick={() => setShowTagCreation(false)}>
+                    Cancel
+                    </Button>
+                </div>
+                )}*/}
 
                 <Button variant='outlined' 
                 className='button' 
