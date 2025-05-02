@@ -1,9 +1,7 @@
-import axios from 'axios';
+import api from '../services/APIservice';
 import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
 import { Link, useParams } from 'react-router-dom';
-
-import Cookies from 'js-cookie'
 
 import { useUser } from '../components/UserContext';
 
@@ -25,8 +23,8 @@ function LoaningHistory() {
   const {user} = useUser()
 
   async function fetchLoanedItems(){
-    const req = await axios.post(
-      import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
+    const req = await api.post(
+      '/items/currentlyloaned',
       {
         "page":page,
         "maxItems":maxItems
@@ -39,8 +37,8 @@ function LoaningHistory() {
   }
 
   async function fetchLoaningHistory(){
-    const req = await axios.post(
-      import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/loanhistory', 
+    const req = await api.post(
+      '/items/loanhistory', 
       {
         "page":page,
         "maxItems":maxItems
@@ -67,7 +65,7 @@ function LoaningHistory() {
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/locations`);
+        const res = await api.get(`/locations`);
         setLocations(res.data);
       } catch (err) {
         console.error("Failed to fetch locations:", err);
@@ -77,7 +75,7 @@ function LoaningHistory() {
   }, []);
 
   const handleReturn = async (itemId) => {
-    const res = await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + `/items/return/${itemId}`,
+    const res = await api.post(`/items/return/${itemId}`,
       {"locationName": selectedLocation},
       {withCredentials: true},
     )

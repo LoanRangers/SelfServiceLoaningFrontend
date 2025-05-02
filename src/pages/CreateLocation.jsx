@@ -1,7 +1,7 @@
 import './CreateItem.css';
 import { useState } from 'react';
 import { Box, Container, TextField, Button } from '@mui/material';
-import axios from 'axios';
+import api from '../services/APIservice';
 
 function CreateLocation() {
     const [locationName, setLocationName] = useState('');
@@ -16,8 +16,8 @@ function CreateLocation() {
         };
     
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/locations`,
+            const response = await api.post(
+                `/locations`,
                 newLocation,
                 { withCredentials: true }
             );

@@ -19,15 +19,15 @@ import { Fragment, forwardRef, useState, useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { IconButton, } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import axios from 'axios';
+import api from './services/APIservice';
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const {user, setUser} = useUser();
 
   useEffect(() => {
-    axios
-      .get(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/me', { withCredentials: true })
+    api
+      .get('/auth/me', { withCredentials: true })
       .then((response) => setUser(response.data))
       .catch((error) => console.error("User fetch error:", error));
   }, []);
@@ -47,7 +47,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/logout', {}, { withCredentials: true });
+      await api.post('/auth/logout', {}, { withCredentials: true });
       setUser(null); // Remove user from state
       console.log("Logout successful!");
     } catch (error) {
@@ -75,6 +75,7 @@ function App() {
       </Link>
       <Routes>
         <Route path='/' element={<FrontPage user={user} handleLogin={handleLogin}/>} />
+        <Route path='/qr/:id' element={<LoanItems />} />
         <Route path='/loan' element={<LoanItems />} />
         <Route path='/return' element={<ReturnItems />} />
         <Route path='/auditlog' element={<AuditLog />} />

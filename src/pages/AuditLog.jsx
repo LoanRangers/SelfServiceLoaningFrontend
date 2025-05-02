@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../services/APIservice';
 import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { Link } from 'react-router-dom';

@@ -3,7 +3,7 @@ import QRCodeScanner from './QRCodeScanner';
 import {Container, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Snackbar} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import api from '../services/APIservice';
 
 import { useUser } from '../components/UserContext';
 
@@ -21,7 +21,7 @@ function ReturnItems() {
 
     useEffect(() => {
         async function fetchItems() {
-            let req = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/items`);
+            let req = await api.get(`/items`);
             setAllItems(req.data)
         }
         fetchItems();
@@ -30,8 +30,8 @@ function ReturnItems() {
     useEffect(() => {
         if(!!user){
           async function fetchLoanedItems(){
-            const req = await axios.post(
-              import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/items/currentlyloaned',
+            const req = await api.post(
+              '/items/currentlyloaned',
               {
                 "page": 1, // duct tape coding
                 "maxItems": 9999 // duct tape coding
@@ -49,7 +49,7 @@ function ReturnItems() {
       useEffect(() => {
         async function fetchLocations() {
           try {
-            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/locations`);
+            const res = await api.get(`/locations`);
             setAllLocations(res.data);
           } catch (err) {
             console.error("Failed to fetch locations:", err);
