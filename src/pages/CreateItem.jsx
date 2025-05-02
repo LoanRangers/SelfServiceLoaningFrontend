@@ -1,6 +1,7 @@
 import './CreateItem.css';
 import api from '../services/APIservice';
 import { useState, useEffect } from 'react';
+import QRCodeScanner from './QRCodeScanner';
 import { 
     Box, Container, TextField, Select, MenuItem, FormControl, 
     InputLabel, Checkbox, FormControlLabel, Button, List, ListItem, ListItemText
@@ -17,13 +18,12 @@ function CreateItem() {
     const [itemLocation, setItemLocation] = useState('');
     const [manufacturedYear, setManufacturedYear] = useState('');
     const [newCategory, setNewCategory] = useState('');
-    const [showTagCreation, setShowTagCreation] = useState(false);
-    const [newTag, setNewTag] = useState('');
     const [itemCreated, setItemCreated] = useState(false);
     const [newItem, setNewItem] = useState({});
     const [showError, setShowError] = useState(false);
     const [locations, setLocations] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
+    const [readQR, setReadQR] = useState(false);
 
     // Fetch locations and categories from the backend
     useEffect(() => {
@@ -81,18 +81,25 @@ function CreateItem() {
                     createdItem,
                     { withCredentials: true }
                 );
-                console.log('Item successfully created:', response.data);
+                console.log(response.data);
                 setNewItem(response.data);
                 setItemCreated(true);
+                setReadQR(false);
             } catch (error) {
                 console.error('Error creating item:', error);
             }
         }
     };
 
+    const handleQrReading = (qr) => {
+        // get qr code from scanner and attach to item
+        console.log(qr);
+        handleCreateItem();
+    }
+
     return (
         <div>
-            {!itemCreated ? (
+            {!readQR && !itemCreated && (
                 <Container maxWidth="xl" className="container">
                     <Box className="box">
                         <h2>Create an item</h2>
@@ -184,7 +191,7 @@ function CreateItem() {
                         <Button
                             variant="outlined"
                             className="create-button"
-                            onClick={handleCreateItem}
+                            onClick={() => setReadQR(true)}
                             disabled={
                                 !itemName ||
                                 !itemLocation ||
@@ -196,21 +203,45 @@ function CreateItem() {
                         </Button>
                     </Box>
                 </Container>
-            ) : (
+            )}
+            {readQR && ( 
+                <>
                 <Container maxWidth="xl" className="container">
                     <Box className="box">
-                        <h4>Item created successfully!</h4>
-                        <p>Item name: {itemName}</p>
+                        <h3>Scan a QR code for {itemName}</h3>
                         <p>Description: {itemDescription}</p>
                         <p>Location: {itemLocation}</p>
                         <p>Manufactured in: {manufacturedYear}</p>
                         <p>Category: {showNewCategoryField ? newCategory : category}</p>
-                        <p>Tags: {selectedTags.join(', ')}</p>
+
+                        <Button variant='outlined' className='create-button' onClick={handleQrReading}>
+                            Code Scanned
+                        </Button>
+                        <Button variant='outlined' className='create-button' onClick={() => setReadQR(false)}>
+                            Back to editing
+                        </Button>
                     </Box>
+                </Container>
+
+                <QRCodeScanner className="qr-code-scanner" handleScan={handleQrReading} />
+                </>
+            )}
+            {itemCreated && (
+                <Container maxWidth="xl" className="container">
+                    {newItem.id && (
+                    <Box className="box">
+                        <h3>Item created successfully!</h3>
+                        <p>Item ID: {newItem.id}</p>
+                        <p>Name: {newItem.name}</p>
+                        <p>Description: {newItem.description}</p>
+                        <p>Location: {newItem.location}</p>
+                        <p>Manufactured in: {newItem.manufacturedYear}</p>
+                        <p>Category: {newItem.categoryName}</p>
+                    </Box>)}
                 </Container>
             )}
         </div>
     );
 }
 
-export default CreateItem;
+export default CreateItem;	
