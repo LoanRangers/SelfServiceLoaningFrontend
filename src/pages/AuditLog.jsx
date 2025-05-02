@@ -13,7 +13,7 @@ function AuditLog() {
   useEffect(() => {
     async function fetchAuditLog() {
       try {
-        const req = await axios.post(
+        const req = await api.post(
           `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog/logs`,
           {
             page: page,
