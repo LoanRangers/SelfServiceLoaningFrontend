@@ -95,7 +95,9 @@ function ItemSearch() {
         const matchesLocation = item.currentLocation === location;
         const matchesCategory = item.categoryName === category;
         const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                (item.markers && item.markers.some(marker => marker.toLowerCase().includes(searchTerm.toLowerCase())));
+                (item.markers && item.markers.some(marker => marker.toLowerCase().includes(searchTerm.toLowerCase()))) ||
+                (item.categoryName && item.categoryName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item.currentLocation && item.currentLocation.toLowerCase().includes(searchTerm.toLowerCase()));
         const matchesAvailability = !availableOnly || item.isAvailable;
         return matchesLocation && matchesCategory && matchesSearchTerm && matchesAvailability;
       }),
@@ -106,7 +108,7 @@ function ItemSearch() {
     <>
     {/* Search bar */}
       <TextField
-        label="Search for an item (name or tag)"
+        label="Search for an item (name, category, location or tag)"
         variant="filled"
         fullWidth
         margin="normal"

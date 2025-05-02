@@ -43,6 +43,12 @@ function LoanItems() {
         }
     }
 
+    const handleQR = (qr) => {
+        console.log(qr)
+        //check the backend for the item with the qr code
+        //then call handleScan with the id of the item
+    }
+
     const handleDelete = (id) => {
         setScannedItems(items => items.filter(item => item.id !== id))
     }
@@ -86,7 +92,8 @@ function LoanItems() {
                     {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
-
+                    
+                    <QRCodeScanner className="qr-code-scanner" handleScan={handleQR}/>
                 </Box>
             </Container>
             <Snackbar
@@ -101,8 +108,6 @@ function LoanItems() {
             message={snackbarMessage}
             onClose={() => setOpenSnackbar(false)}
             />
-
-            <QRCodeScanner className="qr-code-scanner" />
 
 
             {/*test buttons, remove when qr reading is possible*/}

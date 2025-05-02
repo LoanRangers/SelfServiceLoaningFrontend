@@ -101,6 +101,12 @@ function ReturnItems() {
         }
     }
 
+    const handleQR = (qr) => {
+        console.log(qr)
+        //check the backend for the item with the qr code
+        //then call handleScan with the id of the item
+    }
+
     const handleDelete = (id) => {
         setScannedItems(items => items.filter(item => item.id !== id))
     }
@@ -163,6 +169,7 @@ function ReturnItems() {
                         </>
                     )}
 
+                    <QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />
                 </Box>
             </Container>
             <Snackbar
@@ -178,7 +185,7 @@ function ReturnItems() {
             onClose={() => setOpenSnackbar(false)}
             />
 
-            <QRCodeScanner className="qr-code-scanner" />
+            
 
             {/* test buttons, remove when qr reading is possible */}
             <Button variant='outlined' className='confirm-button' onClick={() => handleScan("a4edf3f6-0fc3-4fb9-926a-58829227a3cd")}>
