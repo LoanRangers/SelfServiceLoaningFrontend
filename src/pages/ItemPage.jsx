@@ -70,9 +70,13 @@ function ItemPage() {
               ID: {item.id} {/*normal h4 because of weird mobile version bs*/}
             </h4> 
 
-            <Typography variant="h6" >
-              {item.description ? item.description.split("\n") : "No description"}
-            </Typography>
+            
+            {item.description.split('\n').map((line, index) => (
+              <Typography key={index} variant="h6" style={{ margin: '10px 0' }}>
+                {line}
+              </Typography>
+            ))}
+            
 
             <Typography variant="h6">
               {item.manufacturedYear ? `Manufactured in ${item.manufacturedYear}` : "No information on item age"}
@@ -98,7 +102,7 @@ function ItemPage() {
             )}
 
             {LoggedIn && (
-              <Button variant="outlined" className='button' onClick={handleRedirect}>
+              <Button variant="outlined" className='button' onClick={(handleRedirect)}>
               View loaning history
             </Button>)}
 

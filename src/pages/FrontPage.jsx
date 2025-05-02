@@ -18,6 +18,10 @@ function FrontPage({user, handleLogin}) {
         navigate('/return'); 
       };
 
+    const handleScan = (qr) => {
+        console.log(qr);
+    }
+
     return (
         <div className="front-page">
             {user && (
@@ -41,7 +45,7 @@ function FrontPage({user, handleLogin}) {
             <p>
                 Or scan a QR code for details
             </p>
-            <QRCodeScanner className="qr-code-scanner" />
+            <QRCodeScanner className="qr-code-scanner" handleScan={handleScan}/>
         </div>
     )
 

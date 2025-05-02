@@ -2,6 +2,7 @@ import './CreateItem.css';
 import { useState } from 'react';
 import { Box, Container, TextField, Button } from '@mui/material';
 import api from '../services/APIservice';
+import QRCodeScanner from './QRCodeScanner';
 
 function CreateLocation() {
     const [locationName, setLocationName] = useState('');
@@ -29,6 +30,13 @@ function CreateLocation() {
         }
     };
 
+    const handleScan = (qr) => {
+        console.log(qr);
+        //check the backend for the item with the qr code
+        //then call handleScan with the id of the item
+    
+    }
+
     return (
         <>
             {!locationCreated ? (
@@ -54,6 +62,7 @@ function CreateLocation() {
                             onChange={(e) => setLocationDescription(e.target.value)}
                         />
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                        <QRCodeScanner className="qr-code-scanner" />
                         <Button
                             variant="outlined"
                             className="button"
@@ -67,12 +76,9 @@ function CreateLocation() {
             ) : (
                 <Container maxWidth="xl" className="container">
                     <Box className="box">
-                        <h2>Location creation</h2>
+                        <h2>Location created</h2>
                         <p>Location name: {locationName}</p>
                         <p>Location description: {locationDescription}</p>
-                        <Button variant="outlined" className="button">
-                            Scan QR code
-                        </Button>
                     </Box>
                 </Container>
             )}
