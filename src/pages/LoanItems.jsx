@@ -165,9 +165,40 @@ function LoanItems() {
                 onClose={() => setOpenSnackbar(false)}
             />
 
-            <QRCodeScanner className="qr-code-scanner" />
-
-
+            <Dialog open={openFlagDialog} onClose={handleCloseFlagDialog}>
+                <DialogTitle>Flag Item</DialogTitle>
+                <DialogContent>
+                    <Select
+                        fullWidth
+                        value={selectedFlag}
+                        onChange={(e) => setSelectedFlag(e.target.value)}
+                        displayEmpty
+                    >
+                        <MenuItem value="" disabled>
+                            Select a flag
+                        </MenuItem>
+                        {predefinedFlags.map((flag) => (
+                            <MenuItem key={flag} value={flag}>
+                                {flag}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <TextField
+                        fullWidth
+                        multiline
+                        margin="normal"
+                        label="Add a comment"
+                        value={flagComment}
+                        onChange={(e) => setFlagComment(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseFlagDialog}>Cancel</Button>
+                    <Button onClick={handleSubmitFlag} variant="contained" color="primary">
+                        Submit
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {/*test buttons, remove when qr reading is possible*/}
             <Button variant='outlined' className='confirm-button' onClick={() => handleScan("ffa4078c-5433-4af3-a13f-7b3e8fecea39")}>
                 available item 1
