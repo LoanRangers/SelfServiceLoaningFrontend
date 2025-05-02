@@ -53,6 +53,12 @@ function GenerateQR() {
     window.print(); // Trigger the browser's print dialog
   };
 
+  // Ensure the grid always has 20 cells
+  const gridItems = [...qrCodes];
+  while (gridItems.length < 20) {
+    gridItems.push({ guid: null, name: null }); // Add placeholders for empty cells
+  }
+
   return (
     <Container
       maxWidth="sm"
@@ -90,10 +96,16 @@ function GenerateQR() {
           justifyContent: 'center',
         }}
       >
-        {qrCodes.map((code) => (
-          <Box key={code.guid} style={{ textAlign: 'center' }}>
-            <QRCode value={code.guid} size={128} />
-            <Typography variant="body2">{code.name}</Typography>
+        {gridItems.map((code, index) => (
+          <Box key={index} style={{ textAlign: 'center' }}>
+            {code.guid ? (
+              <>
+                <QRCode value={code.guid} size={128} />
+                <Typography variant="body2">{code.name}</Typography>
+              </>
+            ) : (
+              <div className="placeholder"></div> // Placeholder for empty cells
+            )}
           </Box>
         ))}
       </Box>
