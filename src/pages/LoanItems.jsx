@@ -145,7 +145,7 @@ function LoanItems() {
                         </Table>
                     </TableContainer>
 
-                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
+                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
                     

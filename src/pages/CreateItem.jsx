@@ -16,6 +16,7 @@ function CreateItem() {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemLocation, setItemLocation] = useState('');
+    const [itemQR, setItemQR] = useState('');
     const [manufacturedYear, setManufacturedYear] = useState('');
     const [newCategory, setNewCategory] = useState('');
     const [itemCreated, setItemCreated] = useState(false);
@@ -73,6 +74,7 @@ function CreateItem() {
                 categoryName: showNewCategoryField ? newCategory.trim() : category.trim(),
                 markers: selectedTags,
                 isAvailable: true,
+                qr: itemQR
             };
 
             try {
@@ -94,6 +96,8 @@ function CreateItem() {
     const handleQrReading = (qr) => {
         // get qr code from scanner and attach to item
         console.log(qr);
+        console.log(URL.parse(qr).pathname.split("/")[-1])
+        setItemQR(URL.parse(qr).pathname.split("/")[-1])
         handleCreateItem();
     }
 
