@@ -10,30 +10,53 @@ function GenerateQR() {
   const [QRcodes, setQRcodes] = useState(null)
   const [readyToPrint, setReadyToPrint] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false)
-  const [showQRprint, setShowQRprint] = useState(true)
-  const [rows, setRows] = useState(0)
-  const [cols, setCols] = useState(0)
+  const [hideQRprint, setHideQRprint] = useState(false)
+  const [rows, setRows] = useState(8)
+  const [cols, setCols] = useState(3)
   const [pages, setPages] = useState(1)
+  const [committed, setCommitted] = useState(false)
   const URL = `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`
-  const [count, setCount] = useState("");
 
   useEffect(() => {
     if (readyToPrint && QRcodes) {
-      reactToPrintFn()
-      setReadyToPrint(false)
+      try{
+        reactToPrintFn()
+        setReadyToPrint(false)
+      } catch (error) {
+        console.error("Failed to print QR codes")
+        return
+      }
+      if(!committed){
+        generateServerside(rows,cols,pages)
+        setCommitted(true)
+      }
     }
   }, [QRcodes, readyToPrint, reactToPrintFn]);
 
+  const generateServerside = async (rows, cols, pages) => {
+    await api.get(`/qr/generate/${rows*cols*pages}`,{withCredentials: true})
+  }
+
+  const getId = async () => {
+   const req = await api.get('/qr/id',{withCredentials: true})
+   return req
+  }
+
   const generateQRprint = async () => {
-    if(count&&rows==0&&cols==0||rows>0&&cols>0&(!count||!count>0)){
-      if (!QRcodes) {
-        const req = count?await api.get(`/qrCodes/generate/${count}`,
-        {withCredentials: true}):
-        await api.get(`/qrCodes/generate/${rows*cols*pages}`,
-          {withCredentials: true})
-        setQRcodes(req.data)
-        console.log(req.data)
+    setCommitted(false)
+    if (
+      (pages && rows === 0 && cols === 0) ||
+      (rows > 0 && cols > 0 && (pages || pages > 0))
+    ) {
+      let codes = [];
+  
+      const id = (await getId()).data._max.id || 0;
+      const totalCodes = rows * cols * pages
+  
+      for (let i = id + 1; i <= id + totalCodes; i++) {
+        codes.push(i);
       }
+      setQRcodes(codes);
     }
   }
 
@@ -48,14 +71,14 @@ function GenerateQR() {
           <h3>Generate QR-codes</h3>
           {!showAdvanced&&
           <Stack direction="row" spacing={2}>
-            <Typography variant="body1">Number of codes:</Typography>
+            <Typography variant="body1">Number of pages:</Typography>
             <TextField
               label="Number of codes: "
               variant="outlined"
-              value={count}
+              value={pages}
               margin='normal'
               slotProps={{ htmlInput: { 'type': 'number' } }}
-              onChange={(e) => setCount(e.target.value)}
+              onChange={(e) => setPages(e.target.value)}
               style={{ flex: 1, margin: '0 1rem' }}
             />
           </Stack>}
@@ -102,16 +125,15 @@ function GenerateQR() {
             </Stack>
           </Stack>}
           <Button onClick={generateQRprint}>Generate</Button>
-          <Button onClick={print}>Print</Button>
-          <Button onClick={()=>setQRcodes(null)}>Reset</Button>
+          <Button onClick={print}>Print and Commit</Button>
           <Button onClick={()=>{
             setShowAdvanced(!showAdvanced)
-            showAdvanced?(setCols(0),setRows(0)):setCount("")
+            showAdvanced?(setCols(3),setRows(8)):null
           }}>{showAdvanced?"Basic options":"Advanced options"}</Button>
-          <Button onClick={()=>setShowQRprint(!showQRprint)}>{showQRprint?"Show QR print":"Hide QR print"}</Button>
+          <Button onClick={()=>setHideQRprint(!hideQRprint)}>{hideQRprint?"Show QR print":"Hide QR print"}</Button>
         </Box>
       </Container>
-      <QRprint ref={contentRef} URL={`${URL}/qr/`} QRcodes={QRcodes} row={rows?rows:8} col={cols?cols:3} show={showQRprint}/>
+      <QRprint ref={contentRef} URL={`${URL}/qr/`} QRcodes={QRcodes} row={rows} col={cols} hide={hideQRprint}/>
     </>
   )
 }

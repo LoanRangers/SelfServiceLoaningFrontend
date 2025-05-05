@@ -53,7 +53,7 @@
 
   
   @media screen {
-    .print-wrapper[show="true"] {
+    .print-wrapper[hide="true"] {
       display: none;
     }
   }

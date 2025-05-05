@@ -19,12 +19,12 @@ function maxQRCodeSizeOnA4(cols, rows, marginMm = 10) {
     const maxHeightPerCode = usableHeight / rows;
     const maxQRCodeSize = Math.min(maxWidthPerCode, maxHeightPerCode);
   
-    return maxQRCodeSize*0.8;
+    return maxQRCodeSize*0.7;
   }
 
-export default function QRprint({ref, URL, QRcodes, col=3, row=8, show=true}) {
+export default function QRprint({ref, URL, QRcodes, col=3, row=8, hide=true}) {
   if (QRcodes==null || QRcodes==[]) return
-  const qrData = QRcodes.map((QRcode)=>`${URL}${QRcode.id}`)
+  const qrData = QRcodes.map((QRcode)=>`${URL}${QRcode}`)
   const pages = chunkArray(qrData, col*row);
   const spacing = {
     "gridTemplateColumns": `repeat(${col}, 1fr)`, //grid-template-columns
@@ -32,7 +32,7 @@ export default function QRprint({ref, URL, QRcodes, col=3, row=8, show=true}) {
 }
 
   return (
-    <div className="print-wrapper" show={show.toString()} ref={ref}>
+    <div className="print-wrapper" hide={hide.toString()} ref={ref}>
       {pages.map((pageData, pageIndex) => (
       <div className="a4-container" key={pageIndex} style={spacing}>
         {pageData.map((data, index) => (
