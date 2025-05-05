@@ -6,7 +6,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import api from '../services/APIservice';
 import { Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Select, TextField } from '@mui/material';
 
-function LoanItems() {
+function LoanItems(user) {
+    const [events, setEvents] = useState([]);
     const [allItems, setAllItems] = useState([])
     const [scannedItems, setScannedItems] = useState([])
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -19,8 +20,12 @@ function LoanItems() {
 
     useEffect(() => {
         async function fetchItems() {
-            let req = await api.get(`/items`);
-            setAllItems(req.data);
+            try {
+                const req = await api.get(`/items`);
+                setAllItems(req.data);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
         }
         fetchItems();
     }, []);
@@ -88,24 +93,37 @@ function LoanItems() {
     };
 
     const handleSubmitFlag = async () => {
-        if (!selectedFlag || !flagComment.trim()) {
-            alert('Please select a flag and add a comment.');
+        if (!selectedFlag || !flagComment.trim() || !itemToFlag?.id) {
+            alert('Please select a flag, add a comment, and ensure the item ID is valid.');
             return;
         }
 
-        try {
-            const response = await api.post('/flags', {
-                itemId: itemToFlag.id, // ID of the flagged item
-                flagName: selectedFlag, // Selected flag name
-                comment: flagComment.trim(), // Comment added by the user
-            });
+        const flagData = {
+            flagName: selectedFlag.trim(),
+            itemId: itemToFlag.id.trim(),
+        };
 
-            alert('Item flagged successfully.');
-            console.log('Flag response:', response.data); // For debugging purposes
+        try {
+            console.log('Sending flag data to backend:', flagData); // Debugging
+
+            // Call the backend to add the flag to the item
+            const response = await api.post('/flags/items', flagData, { withCredentials: true });
+
+            console.log('Backend response:', response.data); // Debugging
+
+            setSelectedFlag('');
+            setFlagComment('');
             handleCloseFlagDialog();
+            alert('Item flagged successfully.');
         } catch (error) {
             console.error('Error flagging item:', error);
-            alert('Failed to flag the item.');
+
+            // Handle specific backend errors
+            if (error.response?.data?.error) {
+                alert(`Error: ${error.response.data.error}`);
+            } else {
+                alert('Failed to flag the item. Please try again.');
+            }
         }
     };
 
@@ -148,8 +166,8 @@ function LoanItems() {
                     {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
-                    
-                    <QRCodeScanner className="qr-code-scanner" handleScan={handleQR}/>
+
+                    <QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />
                 </Box>
             </Container>
             <Snackbar
