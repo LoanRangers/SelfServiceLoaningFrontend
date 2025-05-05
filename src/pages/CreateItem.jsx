@@ -16,6 +16,7 @@ function CreateItem() {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemLocation, setItemLocation] = useState('');
+    const [itemQR, setItemQR] = useState('');
     const [manufacturedYear, setManufacturedYear] = useState('');
     const [newCategory, setNewCategory] = useState('');
     const [itemCreated, setItemCreated] = useState(false);
@@ -112,6 +113,7 @@ function CreateItem() {
                 manufacturedYear: manufacturedYear || null,
                 categoryName: showNewCategoryField ? newCategory.trim() : category.trim(),
                 isAvailable: true,
+                qr: itemQR
             };
 
             const itemResponse = await api.post(`/items/`, createdItem, { withCredentials: true });
@@ -137,6 +139,7 @@ function CreateItem() {
 
     const handleQrReading = (qr) => {
         console.log(qr);
+        setItemQR(qr)
         handleCreateItem();
     };
 

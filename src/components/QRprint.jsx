@@ -23,8 +23,8 @@ function maxQRCodeSizeOnA4(cols, rows, marginMm = 10) {
   }
 
 export default function QRprint({ref, URL, QRcodes, col=3, row=8, show=true}) {
-  if (QRcodes==null || QRcodes==null) return
-  const qrData = QRcodes.map((QRcode)=>`${URL}${QRcode}`)
+  if (QRcodes==null || QRcodes==[]) return
+  const qrData = QRcodes.map((QRcode)=>`${URL}${QRcode.id}`)
   const pages = chunkArray(qrData, col*row);
   const spacing = {
     "gridTemplateColumns": `repeat(${col}, 1fr)`, //grid-template-columns

@@ -3,7 +3,7 @@ import QR from './QR';
 import api from '../services/APIservice';
 import QrCodeScannerRoundedIcon from '@mui/icons-material/QrCodeScannerRounded';
 import { Box, Button, IconButton, Modal } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function QRCodeScanner({handleScan}) {

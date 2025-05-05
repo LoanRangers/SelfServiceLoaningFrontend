@@ -76,7 +76,7 @@ function LoanItems(user) {
         setScannedItems(items => items.filter(item => item.id !== id))
     }
 
-    const handleConfrimLoan = () => {
+    const handleConfirmLoan = () => {
         console.log('Loan items:', scannedItems);
         //todo: send loan request to backend
     }
@@ -163,7 +163,7 @@ function LoanItems(user) {
                         </Table>
                     </TableContainer>
 
-                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfrimLoan}>
+                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
 
