@@ -1,0 +1,21 @@
+.flag-icon {
+    color: white; /* Default color for unflagged items */
+    border: 2px solid transparent; /* No border by default */
+    border-radius: 50%; /* Circular border */
+    transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color and border */
+  }
+  
+  .flag-icon.flagged {
+    color: red; /* Red color for flagged items */
+    border: 2px solid transparent; /* No border by default */
+  }
+  
+  .flag-icon:hover {
+    color: white; /* White color on hover */
+    border-color: black; /* Black border on hover */
+  }
+  
+  .flag-icon.flagged:hover {
+    color: white; /* White color on hover for flagged items */
+    border-color: black; /* Black border on hover for flagged items */
+  }

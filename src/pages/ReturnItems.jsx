@@ -160,14 +160,14 @@ function ReturnItems() {
       alert('Please select a flag and add a comment.');
       return;
     }
-  
+
     try {
       const response = await api.post('/flags', {
         itemId: itemToFlag.item.id, // ID of the flagged item
         flagName: selectedFlag, // Selected flag name
         comment: flagComment.trim(), // Comment added by the user
       });
-  
+
       alert('Item flagged successfully.');
       console.log('Flag response:', response.data);
       handleCloseFlagDialog();
