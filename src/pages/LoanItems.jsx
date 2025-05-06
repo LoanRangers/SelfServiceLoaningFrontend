@@ -7,7 +7,6 @@ import api from '../services/APIservice';
 import { Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Select, TextField } from '@mui/material';
 
 function LoanItems(user) {
-    const [events, setEvents] = useState([]);
     const [allItems, setAllItems] = useState([])
     const [scannedItems, setScannedItems] = useState([])
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -17,6 +16,7 @@ function LoanItems(user) {
     const [flagComment, setFlagComment] = useState('');
     const [itemToFlag, setItemToFlag] = useState(null);
     const [predefinedFlags, setPredefinedFlags] = useState([]);
+    const [successfulLoan, setSuccessfulLoan] = useState(false);
 
     useEffect(() => {
         async function fetchItems() {
@@ -66,19 +66,31 @@ function LoanItems(user) {
         }
     }
 
-    const handleQR = (qr) => {
-        console.log(qr)
-        //check the backend for the item with the qr code
-        //then call handleScan with the id of the item
+    const handleQR = async (qr) => {
+        let req = await api.get(`/qrCodes/item/${qr}`, { withCredentials: true });
+        try {
+            handleScan(req.data.id)
+        }
+        catch (error) {
+            console.log('QR code:', qr);
+            console.log(req.data);
+        }
     }
 
     const handleDelete = (id) => {
         setScannedItems(items => items.filter(item => item.id !== id))
     }
 
-    const handleConfirmLoan = () => {
-        console.log('Loan items:', scannedItems);
-        //todo: send loan request to backend
+    const handleConfirmLoan = async () => {
+        try {
+            //let req = await api.post(`/items/loan/`, {items: scannedItems}, { withCredentials: true });
+            //console.log('Loan confirmation response:', req.data); 
+            //doesnt work for me (eemil). Something wrong with the backend
+            setSuccessfulLoan(true);
+        }
+        catch (e) {
+            console.log('Error confirming loan:', e);
+        }
     }
 
     const handleOpenFlagDialog = (item) => {
@@ -133,7 +145,7 @@ function LoanItems(user) {
                 <Box className="loaning-box">
                     <h3>Loan Items</h3>
 
-                    <TableContainer component={Paper} className='table-container'>
+                    {!successfulLoan && (<TableContainer component={Paper} className='table-container'>
                         <Table>
                             <TableHead>
                                 <TableRow>
@@ -161,13 +173,15 @@ function LoanItems(user) {
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                    </TableContainer>)}
 
-                    {scannedItems.length > 0 ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
+                    {scannedItems.length > 0 && !successfulLoan ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
                         Confirm loaned items
                     </Button>) : <p>No items selected</p>}
 
-                    <QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />
+                    {!successfulLoan && (<QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />)}
+
+                    {successfulLoan && (<p>Loan successful!</p>)}
                 </Box>
             </Container>
             <Snackbar
@@ -217,19 +231,6 @@ function LoanItems(user) {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {/*test buttons, remove when qr reading is possible*/}
-            <Button variant='outlined' className='confirm-button' onClick={() => handleScan("ffa4078c-5433-4af3-a13f-7b3e8fecea39")}>
-                available item 1
-            </Button>
-            <Button variant='outlined' className='confirm-button' onClick={() => handleScan("1bae4dcf-0634-4ec9-bbb2-102b26d86fd9")}>
-                available item 2
-            </Button>
-            <Button variant='outlined' className='confirm-button' onClick={() => handleScan("ffd9437d-29bf-48ca-923a-e5faf0ab45d9")}>
-                unavailable item
-            </Button>
-            <Button variant='outlined' className='confirm-button' onClick={() => handleScan("1234")}>
-                not item
-            </Button>
         </div>
     )
 }

@@ -126,6 +126,7 @@ function ReturnItems() {
       }
     } else {
       if (allLocations.some((location) => location.name === id)) {
+        //change this to find location by qr code
         setReturnLocation(id);
         setConfirmReturns(true);
       } else {
@@ -135,12 +136,23 @@ function ReturnItems() {
     }
   };
 
+  const handleQR = async (qr) => {
+    let req = await api.get(`/qrCodes/item/${qr}`, { withCredentials: true });
+    try {
+        handleScan(req.data.id)
+    }
+    catch (error) {
+        console.log('QR code:', qr);
+        console.log(req.data);
+    }
+  }
+
   const handleDelete = (id) => {
     setScannedItems((items) => items.filter((item) => item.id !== id));
   };
 
   const handleConfrimReturn = () => {
-    const returnedItems = scannedItems.map((scannedItem) => scannedItem.item.id);
+    // send return to backend
     console.log('Return items:', returnedItems, 'to location:', returnLocation);
   };
 
@@ -176,6 +188,7 @@ function ReturnItems() {
       alert('Failed to flag the item.');
     }
   };
+
 
   return (
     <div>
@@ -253,7 +266,7 @@ function ReturnItems() {
         onClose={() => setOpenSnackbar(false)}
       />
 
-      <QRCodeScanner className="qr-code-scanner" />
+      <QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />
 
       <Dialog open={openFlagDialog} onClose={handleCloseFlagDialog}>
         <DialogTitle>Flag Item</DialogTitle>
@@ -289,6 +302,7 @@ function ReturnItems() {
           </Button>
         </DialogActions>
       </Dialog>
+      
     </div>
   );
 }
