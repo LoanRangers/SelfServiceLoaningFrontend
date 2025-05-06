@@ -9,11 +9,14 @@ function CreateLocation() {
     const [locationDescription, setLocationDescription] = useState('');
     const [locationCreated, setLocationCreated] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [readQR, setReadQR] = useState(false);
+    const [successfulCreation, setSuccessfulCreation] = useState(false);
 
-    const handleCreateLocation = async () => {
+    const handleCreateLocation = async (qr) => {
         const newLocation = {
             name: locationName.trim(),
             description: locationDescription.trim(),
+            qr: parseInt(qr),
         };
     
         try {
@@ -24,6 +27,8 @@ function CreateLocation() {
             );
             console.log('Location created:', response.data);
             setLocationCreated(true);
+            setReadQR(false)
+            setSuccessfulCreation(true);
         } catch (error) {
             console.error('Error creating location:', error);
             setErrorMessage(error.response?.data?.error || 'Failed to create location');
@@ -32,14 +37,13 @@ function CreateLocation() {
 
     const handleScan = (qr) => {
         console.log(qr);
-        //check the backend for the item with the qr code
-        //then call handleScan with the id of the item
+        handleCreateLocation(qr)
     
     }
 
     return (
         <>
-            {!locationCreated ? (
+            {!locationCreated && !readQR && (
                 <Container maxWidth="xl" className="container">
                     <Box className="box">
                         <h2>Create a new location</h2>
@@ -52,33 +56,34 @@ function CreateLocation() {
                             value={locationName}
                             onChange={(e) => setLocationName(e.target.value)}
                         />
-                        <TextField
-                            className="input"
-                            label="Location description"
-                            variant="filled"
-                            fullWidth
-                            margin="normal"
-                            value={locationDescription}
-                            onChange={(e) => setLocationDescription(e.target.value)}
-                        />
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                        <QRCodeScanner className="qr-code-scanner" />
                         <Button
                             variant="outlined"
                             className="button"
-                            onClick={handleCreateLocation}
-                            disabled={!locationName.trim() || !locationDescription.trim()}
+                            onClick={() => setReadQR(true)}
+                            disabled={!locationName.trim()}
                         >
-                            Create location
+                            Assign QR code
                         </Button>
                     </Box>
                 </Container>
-            ) : (
+            )}
+            {readQR && (
                 <Container maxWidth="xl" className="container">
                     <Box className="box">
-                        <h2>Location created</h2>
-                        <p>Location name: {locationName}</p>
-                        <p>Location description: {locationDescription}</p>
+                        <h2>Assign QR code for</h2>
+                        <p>{locationName}</p>
+                        <Button variant="outlined" className="create-button" onClick={() => setReadQR(false)}>
+                            Edit location name
+                        </Button>
+                        <QRCodeScanner className="qr-code-scanner" handleScan={handleScan} />
+                    </Box>
+                </Container>
+            )}
+            {successfulCreation && (
+                <Container maxWidth="xl" className="container">
+                    <Box className="box">
+                        <h2>Location {locationName} created successfully!</h2>
                     </Box>
                 </Container>
             )}

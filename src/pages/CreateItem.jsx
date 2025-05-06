@@ -16,7 +16,6 @@ function CreateItem() {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemLocation, setItemLocation] = useState('');
-    const [itemQR, setItemQR] = useState('');
     const [manufacturedYear, setManufacturedYear] = useState('');
     const [newCategory, setNewCategory] = useState('');
     const [itemCreated, setItemCreated] = useState(false);
@@ -77,7 +76,7 @@ function CreateItem() {
         setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
     };
 
-    const handleCreateItem = async () => {
+    const handleCreateItem = async (qr) => {
         if (
             (manufacturedYear && (isNaN(parseInt(manufacturedYear)) || manufacturedYear < 1900 || manufacturedYear > new Date().getFullYear())) ||
             (!category && !newCategory)
@@ -113,7 +112,7 @@ function CreateItem() {
                 manufacturedYear: manufacturedYear || null,
                 categoryName: showNewCategoryField ? newCategory.trim() : category.trim(),
                 isAvailable: true,
-                qr: itemQR
+                qr: parseInt(qr)
             };
 
             const itemResponse = await api.post(`/items/`, createdItem, { withCredentials: true });
@@ -139,8 +138,7 @@ function CreateItem() {
 
     const handleQrReading = (qr) => {
         console.log(qr);
-        setItemQR(qr)
-        handleCreateItem();
+        handleCreateItem(qr);
     };
 
     return (
@@ -360,9 +358,7 @@ function CreateItem() {
                             <p>Location: {itemLocation}</p>
                             <p>Manufactured in: {manufacturedYear}</p>
                             <p>Category: {showNewCategoryField ? newCategory : category}</p>
-                            <Button variant="outlined" className="create-button" onClick={handleQrReading}>
-                                Code Scanned
-                            </Button>
+                            
                             <Button variant="outlined" className="create-button" onClick={() => setReadQR(false)}>
                                 Back to editing
                             </Button>
