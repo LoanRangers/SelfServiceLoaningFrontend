@@ -67,7 +67,7 @@ function LoanItems(user) {
     }
 
     const handleQR = async (qr) => {
-        let req = await api.get(`/qrCodes/item/${qr}`, { withCredentials: true });
+        let req = await api.get(`/qr/item/${qr}`, { withCredentials: true });
         try {
             handleScan(req.data.id)
         }
@@ -83,8 +83,8 @@ function LoanItems(user) {
 
     const handleConfirmLoan = async () => {
         try {
-            //let req = await api.post(`/items/loan/`, {items: scannedItems}, { withCredentials: true });
-            //console.log('Loan confirmation response:', req.data); 
+            let req = await api.post(`/items/loan/`, {items: scannedItems}, { withCredentials: true });
+            console.log('Loan confirmation response:', req.data);
             //doesnt work for me (eemil). Something wrong with the backend
             setSuccessfulLoan(true);
         }

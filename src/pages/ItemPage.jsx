@@ -38,8 +38,8 @@ function ItemPage() {
 
     const handleLoan = () => {
       async function loanItem(){
-        let req = await api.post(`/items/loan/${id}/`,
-          {},
+        let req = await api.post(`/items/loan/`,
+          {items:[id]},
           {withCredentials: true}
             )
         if(req.data.loanId){

@@ -18,8 +18,8 @@ function QRCodeScanner({handleScan}) {
 
     const handleQR = (message) => {
 
-        if (message.includes(api.defaults.baseURL + '/qr/')) {
-            const trimmedMessage = message.replace(api.defaults.baseURL + '/qr/', '');
+        if (message.includes(api.defaults.baseURL + '/qr/item/')) {
+            const trimmedMessage = message.replace(api.defaults.baseURL + '/qr/item/', '');
             setCameraOpen(false);
             handleScan(trimmedMessage)
         } 
@@ -62,7 +62,7 @@ function QRCodeScanner({handleScan}) {
             aria-describedby="modal-modal-description"
             >
                 <Box style={style}>
-                    <QR cameraOpen={cameraOpen} notify={handleQR} />
+                    <QR cameraOpen={cameraOpen} callback={handleQR} />
                     <Button onClick={handleCameraClose}>Close</Button>
                 </Box>
             </Modal>          
