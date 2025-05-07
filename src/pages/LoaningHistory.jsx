@@ -118,7 +118,7 @@ function LoaningHistory() {
                 {visibleLoaned.map((item, i) => (
                   <TableRow key={item.item.id+"-"+i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
-                      <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
+                      <Link to={`/SelfServiceLoaningFrontend/item/${item.item.id}`}>{item.item.name}</Link>
                     </TableCell>
                     <TableCell>{item.item.description}</TableCell>
                     <TableCell>{item.item.categoryName}</TableCell>
@@ -170,7 +170,7 @@ function LoaningHistory() {
                 {visibleHistory.map((item, i) => (
                   <TableRow key={item.item.id+"-"+i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
-                      <Link to={`/item/${item.item.id}`}>{item.item.name}</Link>
+                      <Link to={`/SelfServiceLoaningFrontend/item/${item.item.id}`}>{item.item.name}</Link>
                     </TableCell>
                     <TableCell>{item.item.description}</TableCell>
                     <TableCell>{item.item.categoryName}</TableCell>

@@ -317,7 +317,7 @@ function ItemSearch() {
                         {category.items.map((item) => (
                           <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell component="th" scope="row">
-                              <Link to={`/item/${item.id}`}>{item.name}</Link>
+                              <Link to={`/SelfServiceLoaningFrontend/item/${item.id}`}>{item.name}</Link>
                             </TableCell>
                             <TableCell className={item.isAvailable ? "available" : "not-available"}>
                               {item.isAvailable ? "Yes" : "No"}
