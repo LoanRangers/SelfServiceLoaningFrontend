@@ -9,6 +9,12 @@ on:
 permissions:
   contents: write
 
+env:
+  VITE_BACKEND_URL: https://localhost
+  VITE_BACKEND_PORT: 3000
+  VITE_FRONTEND_URL: https://localhost
+  VITE_FRONTEND_PORT: 5173
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -35,15 +41,16 @@ jobs:
 
       - name: Build static site
         run: npm run build
-
-      - name: Copy 404.html
-        run: cp dist/index.html dist/404.html
+        env:
+          VITE_BACKEND_URL: https://localhost
+          VITE_BACKEND_PORT: 3000
+          VITE_FRONTEND_URL: https://loanrangers.github.io/SelfServiceLoaningFrontend/
+          VITE_FRONTEND_PORT: 443
+      - name: copy
+        run: cp /home/runner/work/SelfServiceLoaningFrontend/SelfServiceLoaningFrontend/dist /home/runner/actions_github_pages_1746625526442
 
       - name: List files
         run: ls -R dist/
-
-      - name: read index.html
-        run: cat ./dist/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
