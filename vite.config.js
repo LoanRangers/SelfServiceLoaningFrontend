@@ -6,5 +6,5 @@ import mkcert from 'vite-plugin-mkcert';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), mkcert()],
-  base: '/loanrangers/',
+  base: '/SelfServiceLoaningFrontend/',
 });
