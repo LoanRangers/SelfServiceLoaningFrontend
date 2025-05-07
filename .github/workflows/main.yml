@@ -39,6 +39,9 @@ jobs:
       - name: Copy 404.html
         run: cp dist/index.html dist/404.html
 
+      - name: Change directory to dist
+        run: cd dist
+
       - name: List files
         run: ls -la
 
