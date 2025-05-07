@@ -49,11 +49,11 @@ jobs:
       - name: copy
         run: cp -r /home/runner/work/SelfServiceLoaningFrontend/SelfServiceLoaningFrontend/dist /home/runner/actions_github_pages_1746625526442
 
-      - name: List files
-        run: ls -R dist/
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+
+      - name: List files
+        run: ls -R dist/
