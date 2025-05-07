@@ -67,9 +67,11 @@ function LoanItems(user) {
     }
 
     const handleQR = async (qr) => {
-        let req = await api.get(`/qr/item/${qr}`, { withCredentials: true });
+        let req = await api.get(`/qr/item/${parseInt(qr)}`, { withCredentials: true });
         try {
             handleScan(req.data.id)
+            console.log('QR code:', qr);
+            console.log('QR code data:', req.data);
         }
         catch (error) {
             console.log('QR code:', qr);
@@ -177,7 +179,7 @@ function LoanItems(user) {
 
                     {scannedItems.length > 0 && !successfulLoan ? (<Button variant='outlined' className='confirm-button' onClick={handleConfirmLoan}>
                         Confirm loaned items
-                    </Button>) : <p>No items selected</p>}
+                    </Button>) : !successfulLoan && (<p>No items selected</p>)}
 
                     {!successfulLoan && (<QRCodeScanner className="qr-code-scanner" handleScan={handleQR} />)}
 

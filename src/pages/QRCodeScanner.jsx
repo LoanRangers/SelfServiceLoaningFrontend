@@ -3,7 +3,7 @@ import QR from './QR';
 import api from '../services/APIservice';
 import QrCodeScannerRoundedIcon from '@mui/icons-material/QrCodeScannerRounded';
 import { Box, Button, IconButton, Modal } from '@mui/material';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function QRCodeScanner({handleScan}) {
@@ -23,9 +23,16 @@ function QRCodeScanner({handleScan}) {
             setCameraOpen(false);
             handleScan(trimmedMessage)
         } 
+        //else if because I have the old QR codes
+        else if (message.includes(api.defaults.baseURL + '/qr/')) {
+            const trimmedMessage = message.replace(api.defaults.baseURL + '/qr/', '');
+            setCameraOpen(false);
+            handleScan(trimmedMessage)
+        }
         else 
         {
             toast.error(message);
+            setCameraOpen(false);
         }
     };
 

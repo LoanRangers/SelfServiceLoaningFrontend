@@ -29,21 +29,17 @@ import { useUser } from '../components/UserContext';
 function ReturnItems() {
   const [allItems, setAllItems] = useState([]);
   const [loanedItems, setLoanedItems] = useState([]);
-  const [scannedItems, setScannedItems] = useState([
-    {
-      item: {
-        id: 'test-item-id',
-        name: 'Test Item',
-      },
-      loanedDate: new Date(), // Current date for testing
-    },
-  ]);
+  const [scannedItems, setScannedItems] = useState([]);
+  const [returnedItems, setReturnedItems] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
   const [selectLocation, setSelectLocation] = useState(false);
   const [returnLocation, setReturnLocation] = useState('');
   const [confirmReturns, setConfirmReturns] = useState(false);
+  const [successfulReturn, setSuccessfulReturn] = useState(false);
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
   const [openFlagDialog, setOpenFlagDialog] = useState(false);
   const [selectedFlag, setSelectedFlag] = useState('');
   const [flagComment, setFlagComment] = useState('');
@@ -137,13 +133,36 @@ function ReturnItems() {
   };
 
   const handleQR = async (qr) => {
-    let req = await api.get(`/qrCodes/item/${qr}`, { withCredentials: true });
-    try {
-        handleScan(req.data.id)
+    if (!selectLocation) {
+      let req = await api.get(`/qr/item/${parseInt(qr)}`, { withCredentials: true });
+      try {
+          handleScan(req.data.id)
+      }
+      catch (error) {
+          console.log('QR code:', qr);
+          console.log(req.data);
+      }
     }
-    catch (error) {
-        console.log('QR code:', qr);
-        console.log(req.data);
+    else {
+      let req = await api.get(`/qr/location/${parseInt(qr)}`, { withCredentials: true })
+      try {
+          handleLocation(req.data)
+      }
+      catch (error) {
+          console.log('QR code:', qr);
+          console.log(req.data);
+      }
+    }
+  }
+
+  const handleLocation = (location) => {
+    if (location) {
+      setReturnLocation(location.name);
+      setConfirmReturns(true);
+    }
+    else {
+      setSnackbarMessage(`Location with ID ${id} not found.`);
+      setOpenSnackbar(true);
     }
   }
 
@@ -151,9 +170,18 @@ function ReturnItems() {
     setScannedItems((items) => items.filter((item) => item.id !== id));
   };
 
-  const handleConfrimReturn = () => {
-    // send return to backend
-    console.log('Return items:', returnedItems, 'to location:', returnLocation);
+  const handleConfrimReturn = async () => {
+    try {
+      let req = await api.post(`/items/return/`, {items: scannedItems, locationName: returnLocation}, { withCredentials: true });
+      setReturnedItems(scannedItems.map(item => item.item));
+      setSuccessfulReturn(true);
+      console.log('Return items:', returnedItems, 'to location:', returnLocation);
+      console.log('Return response:', req.data);
+    }
+    catch (error) {
+      console.log('Error confirming return:', error);
+    }
+    
   };
 
   const handleOpenFlagDialog = (item) => {
@@ -195,7 +223,7 @@ function ReturnItems() {
       <Container maxWidth="xl" sx={{ paddingTop: 4, paddingBottom: 10 }}>
         <Box className="loaning-box">
           <h3>Return Items</h3>
-
+          { !successfulReturn && (
           <TableContainer component={Paper} className="table-container">
             <Table>
               <TableHead>
@@ -211,7 +239,7 @@ function ReturnItems() {
                     <TableCell>{item.item.name}</TableCell>
                     <TableCell>{item.loanedDate.toLocaleString()}</TableCell>
                     <TableCell className="table-cell-small" align="center">
-                      <IconButton onClick={() => handleDelete(item.id)} sx={{ color: 'gray' }} disabled={selectLocation}>
+                      <IconButton onClick={() => handleDelete(item.id)} sx={{ color: 'gray' }} disabled={selectLocation || successfulReturn}>
                         <DeleteIcon />
                       </IconButton>
                       <IconButton onClick={() => handleOpenFlagDialog(item)} sx={{ color: 'orange' }}>
@@ -225,23 +253,35 @@ function ReturnItems() {
               </TableBody>
             </Table>
           </TableContainer>
+          )}
 
           {selectLocation && !confirmReturns && <p>Select the location by scanning the Location QR code</p>}
 
-          {scannedItems.length > 0 && !selectLocation ? (
+          {scannedItems.length > 0 && !selectLocation  && !confirmReturns ? (
             <Button variant="outlined" className="confirm-button" onClick={() => setSelectLocation(true)}>
               Choose returning location
             </Button>
           ) : (
-            !selectLocation && <p>No items selected</p>
+            !selectLocation && !confirmReturns && <p>No items selected</p>
           )}
-          {selectLocation && !confirmReturns && (
+          {selectLocation && !confirmReturns && returnLocation === '' && (
             <Button variant="outlined" className="confirm-button" onClick={() => setSelectLocation(false)}>
               Scan more items
             </Button>
           )}
-          {confirmReturns && <h4> Selected location: {returnLocation}</h4>}
-          {confirmReturns && (
+          {selectLocation && !confirmReturns && returnLocation !== '' && (
+            <>
+              <h4> Selected location: {returnLocation}</h4>
+              <Button variant="outlined" className="confirm-button" onClick={() => setSelectLocation(false)}>
+              Scan more items
+            </Button>
+              <Button variant="outlined" className="confirm-button" onClick={() => {setSelectLocation(false); setConfirmReturns(true)}}>
+                Confirm location
+              </Button>
+            </>
+          )}
+          {confirmReturns && !successfulReturn && <h4> Selected location: {returnLocation}</h4>}
+          {confirmReturns && !successfulReturn && (
             <>
               <Button variant="outlined" className="confirm-button" onClick={handleConfrimReturn}>
                 Confirm returns
@@ -250,6 +290,18 @@ function ReturnItems() {
                 Back to scanning
               </Button>
             </>
+          )}
+
+          {successfulReturn && (
+              <>
+                <h4>Items returned successfully to {returnLocation}</h4>
+                {Array.isArray(returnedItems) && returnedItems.map((item) => (
+                  <p key={item.id}>
+                    {item.name} - {item.categoryName}
+                  </p>
+                ))}
+              </>
+              
           )}
         </Box>
       </Container>
