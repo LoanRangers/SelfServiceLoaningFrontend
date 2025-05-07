@@ -47,7 +47,7 @@ jobs:
           VITE_FRONTEND_URL: https://loanrangers.github.io/SelfServiceLoaningFrontend/
           VITE_FRONTEND_PORT: 443
       - name: copy
-        run: cp /home/runner/work/SelfServiceLoaningFrontend/SelfServiceLoaningFrontend/dist /home/runner/actions_github_pages_1746625526442
+        run: cp -r /home/runner/work/SelfServiceLoaningFrontend/SelfServiceLoaningFrontend/dist /home/runner/actions_github_pages_1746625526442
 
       - name: List files
         run: ls -R dist/
