@@ -70,7 +70,7 @@ function App() {
         user={user}
       />
     
-      <Link to="/" style={{ textDecoration: 'none' }}>
+      <Link to="/SelfServiceLoaningFrontend/" style={{ textDecoration: 'none' }}>
         <h1>UTU Self Loaning System</h1>
       </Link>
       <Routes>

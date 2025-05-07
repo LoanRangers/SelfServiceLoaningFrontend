@@ -54,7 +54,7 @@ function ItemPage() {
       console.log(modifiedItem); // replace with modification to backend
     }
     const handleRedirect = () => {
-      navigate('/loaninghistory'); // Replace with your actual route
+      navigate('/SelfServiceLoaningFrontend/loaninghistory'); // Replace with your actual route
     };
 
   return (
