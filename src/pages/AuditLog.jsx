@@ -14,7 +14,7 @@ function AuditLog() {
     async function fetchAuditLog() {
       try {
         const req = await api.post(
-          `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}/auditlog/logs`,
+          `${import.meta.env.VITE_BACKEND_URL}/auditlog/logs`,
           {
             page: page,
           }

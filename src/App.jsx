@@ -42,7 +42,7 @@ function App() {
 
 
   const handleLogin = () => {
-    window.location.href = import.meta.env.VITE_BACKEND_URL + ':' + import.meta.env.VITE_BACKEND_PORT + '/auth/gitlab';
+    window.location.href = import.meta.env.VITE_BACKEND_URL + '/auth/gitlab';
   }
 
   const handleLogout = async () => {

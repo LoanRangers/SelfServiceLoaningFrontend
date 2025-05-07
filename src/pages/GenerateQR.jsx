@@ -15,7 +15,7 @@ function GenerateQR() {
   const [cols, setCols] = useState(3)
   const [pages, setPages] = useState(1)
   const [committed, setCommitted] = useState(false)
-  const URL = `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`
+  const URL = `${import.meta.env.VITE_BACKEND_URL}`
 
   useEffect(() => {
     if (readyToPrint && QRcodes) {

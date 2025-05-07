@@ -39,7 +39,6 @@ jobs:
         run: npm run build
         env:
           VITE_BACKEND_URL: https://selfserviceloaningbackend.onrender.com
-          VITE_BACKEND_PORT: 10000
           VITE_FRONTEND_URL: https://loanrangers.github.io/SelfServiceLoaningFrontend/
           VITE_FRONTEND_PORT: 443
 
