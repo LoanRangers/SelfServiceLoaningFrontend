@@ -39,8 +39,12 @@ jobs:
       - name: Copy 404.html
         run: cp dist/index.html dist/404.html
 
+      - name: List files
+        run: ls -la
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          ForceOrphan: true
