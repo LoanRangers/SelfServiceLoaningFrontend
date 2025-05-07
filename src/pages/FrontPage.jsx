@@ -7,7 +7,7 @@ function FrontPage({user, handleLogin}) {
     const navigate = useNavigate()
 
     const handleBrowse = () => {
-        navigate('/browse'); 
+        navigate('/SelfServiceLoaningFrontend/browse'); 
       };
 
     const handleLoan = () => {

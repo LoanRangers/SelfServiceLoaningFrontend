@@ -80,7 +80,7 @@ function App() {
         <Route path='/return' element={<ReturnItems />} />
         <Route path='/auditlog' element={<AuditLog />} />
         <Route path='/loaninghistory' element={<LoaningHistory />} />
-        <Route exact path="/browse" element={<ItemSearch />} />
+        <Route exact path="/SelfServiceLoaningFrontend/browse" element={<ItemSearch />} />
         <Route path="/CreateItem" element={<CreateItem />} />
         <Route path="/CreateLocation" element={<CreateLocation/>} />
         <Route path="/item/:id" element={<ItemPage />} />
