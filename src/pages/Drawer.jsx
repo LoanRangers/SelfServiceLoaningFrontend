@@ -7,17 +7,17 @@ function Drawer({ open, onClose, handleLogin, handleLogout, user }) {
 
   {/* Links on the sidebar */}
   const generalLinks = [
-    { text: "Audit Log", path: "/auditlog" },
-    { text: "Create Items", path: "/CreateItem" },
-    { text: "Create locations", path: "/CreateLocation" },
-    { text: "Generate QR", path: "/generateqr" },
-    { text: "Browse Items", path: "/browse" },
+    { text: "Audit Log", path: "/SelfServiceLoaningFrontend/auditlog" },
+    { text: "Create Items", path: "/SelfServiceLoaningFrontend/CreateItem" },
+    { text: "Create locations", path: "/SelfServiceLoaningFrontend/CreateLocation" },
+    { text: "Generate QR", path: "/SelfServiceLoaningFrontend/generateqr" },
+    { text: "Browse Items", path: "/SelfServiceLoaningFrontend/browse" },
   ]
 
   const userLinks = [
-    { text: "Loaned items/history", path: "/loaninghistory" },
-    { text: "Loan Items", path: "/loan" },
-    { text: "Return Items", path: "/return" },
+    { text: "Loaned items/history", path: "/SelfServiceLoaningFrontend/loaninghistory" },
+    { text: "Loan Items", path: "/SelfServiceLoaningFrontend/loan" },
+    { text: "Return Items", path: "/SelfServiceLoaningFrontend/return" },
   ]
 
   return (

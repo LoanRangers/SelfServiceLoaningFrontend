@@ -74,17 +74,17 @@ function App() {
         <h1>UTU Self Loaning System</h1>
       </Link>
       <Routes>
-        <Route path='/' element={<FrontPage user={user} handleLogin={handleLogin}/>} />
-        <Route path='/qr/:id' element={<LoanItems />} />
-        <Route path='/loan' element={<LoanItems />} />
-        <Route path='/return' element={<ReturnItems />} />
-        <Route path='/auditlog' element={<AuditLog />} />
-        <Route path='/loaninghistory' element={<LoaningHistory />} />
+        <Route path='/SelfServiceLoaningFrontend/' element={<FrontPage user={user} handleLogin={handleLogin}/>} />
+        <Route path='/SelfServiceLoaningFrontend/qr/:id' element={<LoanItems />} />
+        <Route path='/SelfServiceLoaningFrontend/loan' element={<LoanItems />} />
+        <Route path='/SelfServiceLoaningFrontend/return' element={<ReturnItems />} />
+        <Route path='/SelfServiceLoaningFrontend/auditlog' element={<AuditLog />} />
+        <Route path='/SelfServiceLoaningFrontend/loaninghistory' element={<LoaningHistory />} />
         <Route exact path="/SelfServiceLoaningFrontend/browse" element={<ItemSearch />} />
-        <Route path="/CreateItem" element={<CreateItem />} />
-        <Route path="/CreateLocation" element={<CreateLocation/>} />
-        <Route path="/item/:id" element={<ItemPage />} />
-        <Route path="/generateqr" element={<GenerateQR />} />
+        <Route path="/SelfServiceLoaningFrontend/CreateItem" element={<CreateItem />} />
+        <Route path="/SelfServiceLoaningFrontend/CreateLocation" element={<CreateLocation/>} />
+        <Route path="/SelfServiceLoaningFrontend/item/:id" element={<ItemPage />} />
+        <Route path="/SelfServiceLoaningFrontend/generateqr" element={<GenerateQR />} />
       </Routes>
       <Help />
     </div>

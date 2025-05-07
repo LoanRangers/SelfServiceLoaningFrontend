@@ -11,11 +11,11 @@ function FrontPage({user, handleLogin}) {
       };
 
     const handleLoan = () => {
-    navigate('/loan'); 
+    navigate('/SelfServiceLoaningFrontend/loan'); 
     };
 
     const handleReturn = () => {
-        navigate('/return'); 
+        navigate('/SelfServiceLoaningFrontend/return'); 
       };
 
     const handleScan = (qr) => {
