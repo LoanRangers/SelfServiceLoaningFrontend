@@ -7,7 +7,9 @@ on:
     branches: [master]
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 env:
   VITE_BACKEND_URL: https://localhost
