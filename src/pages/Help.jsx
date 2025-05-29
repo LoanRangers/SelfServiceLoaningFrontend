@@ -1,19 +1,32 @@
 import React, {useState} from 'react'
 import {useLocation} from 'react-router-dom'
-import Qrhelp from '../assets/qr-reading'
 import {Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import Createitemhelp from '../assets/Createitemhelp'
-import Loaninghistoryhelp from '../assets/Loaninghistoryhelp'
-import Roomshelp from '../assets/Roomshelp'
-import CreateLocationhelp from '../assets/Createlocationhelp'
+
+// Importing help button components for different pages
+import Createitemhelp from '../assets/help_buttons/Create_item_help'
+import Loaninghistoryhelp from '../assets/help_buttons/Loaning_history_help'
+import Itempagehelp from '../assets/help_buttons/Item_page_help'
+import CreateLocationhelp from '../assets/help_buttons/Create_location_help'
+import Browsehelp from '../assets/help_buttons/Browse_help'
+import Loanhelp from '../assets/help_buttons/Loaning_help'
+import QRGenerate from '../assets/help_buttons/QR_generating_help'
+import Mainpage from '../assets/help_buttons/Main_page_help'
+import Returnhelp from '../assets/help_buttons/Returning_help'
+import Auditloghelp from '../assets/help_buttons/Auditlog_help'
+
 
 const helpGuides = {
-    '/': <Qrhelp/>,
+    '/': <Mainpage/>,
+    '/loan': <Loanhelp/>,
+    '/return': <Returnhelp/>,
+    '/auditlog': <Auditloghelp/>,
     '/loaninghistory': <Loaninghistoryhelp/>,
+    '/browse': <Browsehelp/>,
     '/CreateItem': <Createitemhelp/>,
-    '/rooms': <Roomshelp/>,
     '/CreateLocation': <CreateLocationhelp/>,
+    '/item': <Itempagehelp/>,
+    '/generateqr': <QRGenerate/> 
 }
 
 function Help() {
