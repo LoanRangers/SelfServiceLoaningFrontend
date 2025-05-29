@@ -13,17 +13,24 @@ import Loanhelp from '../assets/help_buttons/Loaning_help'
 import QRGenerate from '../assets/help_buttons/QR_generating_help'
 import Mainpage from '../assets/help_buttons/Main_page_help'
 import Returnhelp from '../assets/help_buttons/Returning_help'
+import Auditloghelp from '../assets/help_buttons/Auditlog_help'
+// import Itemsearchhelp from '../assets/help_buttons/Item_search_help'
+// import Modifyitemhelp from '../assets/help_buttons/Item_modifying_help'
+
 
 const helpGuides = {
-    '/loaninghistory': <Loaninghistoryhelp/>,
-    '/CreateItem': <Createitemhelp/>,
-    '/item': <Itempagehelp/>,
-    '/CreateLocation': <CreateLocationhelp/>,
-    '/browse': <Browsehelp/>,
-    '/loan': <Loanhelp/>,
-    '/generateqr': <QRGenerate/>,
     '/': <Mainpage/>,
+    '/loan': <Loanhelp/>,
     '/return': <Returnhelp/>,
+    '/auditlog': <Auditloghelp/>,
+    '/loaninghistory': <Loaninghistoryhelp/>,
+    '/browse': <Browsehelp/>,
+    '/CreateItem': <Createitemhelp/>,
+    '/CreateLocation': <CreateLocationhelp/>,
+    '/item': <Itempagehelp/>,
+    '/generateqr': <QRGenerate/>
+    // '/itemsearch': <Itemsearchhelp/>
+    // '/modifyitem': <Modifyitemhelp/>
 }
 
 function Help() {
