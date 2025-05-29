@@ -14,8 +14,6 @@ import QRGenerate from '../assets/help_buttons/QR_generating_help'
 import Mainpage from '../assets/help_buttons/Main_page_help'
 import Returnhelp from '../assets/help_buttons/Returning_help'
 import Auditloghelp from '../assets/help_buttons/Auditlog_help'
-// import Itemsearchhelp from '../assets/help_buttons/Item_search_help'
-// import Modifyitemhelp from '../assets/help_buttons/Item_modifying_help'
 
 
 const helpGuides = {
@@ -28,9 +26,7 @@ const helpGuides = {
     '/CreateItem': <Createitemhelp/>,
     '/CreateLocation': <CreateLocationhelp/>,
     '/item': <Itempagehelp/>,
-    '/generateqr': <QRGenerate/>
-    // '/itemsearch': <Itemsearchhelp/>
-    // '/modifyitem': <Modifyitemhelp/>
+    '/generateqr': <QRGenerate/> 
 }
 
 function Help() {

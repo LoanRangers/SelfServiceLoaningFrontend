@@ -2,8 +2,8 @@ function Createlocationhelp() {
 
     return (
       <>
-        <h3>Help page for creating location</h3>
-        <li></li>
+        <h3>Help Page</h3>
+        <li>Here you can create a new location to store items.</li>
       </>
     )
   } 

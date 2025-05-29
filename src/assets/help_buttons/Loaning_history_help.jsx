@@ -2,8 +2,8 @@ function Loaninghistoryhelp() {
 
     return (
       <>
-        <h3>Help page for loaning history page</h3>
-        <li></li>
+        <h3>Help Page</h3>
+        <li>Here you can see currently loaned items as well as loaning history</li>
       </>
     )
   } 
